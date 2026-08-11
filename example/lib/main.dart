@@ -25,6 +25,15 @@ class DemoPage extends StatefulWidget {
 
 class _DemoPageState extends State<DemoPage> {
   double _fontSize = 16;
+  double _iconSize = 48;
+
+  final SmartMeasurerController _iconSizeController = SmartMeasurerController();
+
+  @override
+  void dispose() {
+    _iconSizeController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,11 +97,114 @@ class _DemoPageState extends State<DemoPage> {
           ),
           const SizedBox(height: 32),
           _Section(
+            title: 'SmartMeasurer — animation & controller',
+            subtitle:
+                'La bulle grandit/rétrécit en douceur (animationDuration) '
+                'et la taille mesurée est lue depuis un SmartMeasurerController '
+                'externe, sans passer par le builder.',
+            child: Column(
+              children: [
+                SmartMeasurer(
+                  controller: _iconSizeController,
+                  animationDuration: const Duration(milliseconds: 300),
+                  animationCurve: Curves.easeOutBack,
+                  child: Icon(Icons.star,
+                      size: _iconSize, color: Colors.deepPurple),
+                  builder:
+                      (context, measuredChild, size, isPrecise, constraints) {
+                    return Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.deepPurple.shade50,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: isPrecise ? Colors.deepPurple : Colors.grey,
+                          width: 2,
+                        ),
+                      ),
+                      child: measuredChild,
+                    );
+                  },
+                ),
+                const SizedBox(height: 8),
+                ListenableBuilder(
+                  listenable: _iconSizeController,
+                  builder: (context, _) => Text(
+                    'Taille mesurée : '
+                    '${_iconSizeController.size.width.toStringAsFixed(1)} × '
+                    '${_iconSizeController.size.height.toStringAsFixed(1)}'
+                    '${_iconSizeController.isPrecise ? '' : ' (estimation)'}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () => setState(() => _iconSize = 32),
+                      child: const Text('Petit'),
+                    ),
+                    OutlinedButton(
+                      onPressed: () => setState(() => _iconSize = 48),
+                      child: const Text('Moyen'),
+                    ),
+                    OutlinedButton(
+                      onPressed: () => setState(() => _iconSize = 80),
+                      child: const Text('Grand'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 32),
+          _Section(
+            title: 'SmartMeasurerGroup',
+            subtitle: 'Mesure plusieurs libellés à la fois pour aligner leur '
+                'largeur sur la plus large, sans imbriquer plusieurs '
+                'SmartMeasurer à la main.',
+            child: SmartMeasurerGroup(
+              children: const [
+                Text('Court'),
+                Text('Un peu plus long'),
+                Text('Moyen'),
+              ],
+              builder:
+                  (context, measuredChildren, sizes, allPrecise, constraints) {
+                final double maxWidth = sizes.isEmpty
+                    ? 0.0
+                    : sizes.map((s) => s.width).reduce((a, b) => a > b ? a : b);
+                return Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final child in measuredChildren)
+                      Container(
+                        width: allPrecise ? maxWidth + 24 : null,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 12,
+                        ),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.teal.shade50,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: child,
+                      ),
+                  ],
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 32),
+          _Section(
             title: 'MeasuredDecoration',
             subtitle: 'Décor dessiné sans délai d\'une frame — jamais de flash '
                 'visible, même à la première frame.',
             child: MeasuredDecoration(
-              painter: (canvas, size) {
+              painter: (canvas, size, constraints) {
                 final paint = Paint()..color = Colors.teal.shade100;
                 canvas.drawRRect(
                   RRect.fromRectAndRadius(

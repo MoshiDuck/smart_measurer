@@ -4,9 +4,9 @@ description: >-
   precision tracking and a zero-delay, size-aware decoration painter
   for pure-drawing use cases.
 version: 0.1.0
-homepage: https://github.com/your-username/smart_measurer
-repository: https://github.com/your-username/smart_measurer
-issue_tracker: https://github.com/your-username/smart_measurer/issues
+homepage: https://github.com/MoshiDuck/smart_measurer
+repository: https://github.com/MoshiDuck/smart_measurer
+issue_tracker: https://github.com/MoshiDuck/smart_measurer/issues
 
 environment:
   sdk: ">=3.0.0 <4.0.0"

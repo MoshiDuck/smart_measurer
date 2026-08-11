@@ -1,0 +1,11 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # 100% de l'API publique est documentée (voir lib/src/smart_measurer_base.dart) :
+    # cette règle garde ce niveau de couverture dans le temps plutôt que de le
+    # constater a posteriori. Le score pub.dev n'exige que 20% de couverture,
+    # mais viser 100% élimine toute variance de score liée à ce critère.
+    public_member_api_docs: true
+    always_declare_return_types: true
+    avoid_print: false # debugPrint est utilisé volontairement pour le debug

@@ -1,0 +1,32 @@
+name: smart_measurer
+description: >-
+  Measure a widget's real size and react to it, with frame-accurate
+  precision tracking and a zero-delay, size-aware decoration painter
+  for pure-drawing use cases.
+version: 0.1.0
+homepage: https://github.com/your-username/smart_measurer
+repository: https://github.com/your-username/smart_measurer
+issue_tracker: https://github.com/your-username/smart_measurer/issues
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  # Ce package n'expose pas d'assets.
+
+# topics: pub.dev n'accepte que des mots-clés d'une liste fermée et validée
+# côté serveur (voir https://pub.dev/policy#terms-of-service pour la liste à
+# jour). Décommentez et ajustez après vérification, par ex. :
+# topics:
+#   - widgets
+#   - layout

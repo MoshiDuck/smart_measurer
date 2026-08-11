@@ -1,47 +1,48 @@
 # smart_measurer
 
-Mesurez la taille réelle d'un widget Flutter et réagissez-y — avec
-estimation propre pendant le court délai de mesure, et une variante **sans
-délai** pour les cas où vous avez seulement besoin de dessiner.
+Measure a widget's real size in Flutter and react to it — with a clean
+estimate during the one-frame measurement delay, and a **zero-delay**
+variant for when you only need to draw.
 
-## Pourquoi ce package
+## Why this package
 
-Flutter exécute toujours *build* avant *layout* au sein d'une frame. Il est
-donc structurellement impossible de connaître la taille d'un widget au
-moment où on le construit pour la première fois — toute solution qui
-retourne un nouveau `Widget` basé sur une taille mesurée a nécessairement un
-délai d'une frame. `smart_measurer` ne cache pas cette contrainte : il vous
-donne un flag `isPrecise` explicite pour savoir, à chaque frame, si la
-taille affichée est mesurée ou estimée.
+Flutter always runs *build* before *layout* within a frame. It is
+structurally impossible to know a widget's size when building it for the
+first time — any solution that returns a new `Widget` based on a measured
+size necessarily has a one-frame delay. `smart_measurer` doesn't hide this
+constraint: it gives you an explicit `isPrecise` flag so you know, every
+frame, whether the displayed size is measured or estimated.
 
-Pour les cas où vous n'avez besoin que de *dessiner* un décor dépendant de
-la taille (pas de construire de nouveaux widgets), `MeasuredDecoration`
-évite complètement ce délai en restant dans la couche `RenderObject`.
+For cases where you only need to *paint* a size-dependent decoration (not
+build new widgets), `MeasuredDecoration` avoids that delay entirely by
+staying inside the `RenderObject` layer.
 
-## Les trois widgets
+## The three widgets
 
-| Widget | Délai | Usage |
+| Widget | Delay | Use case |
 |---|---|---|
-| `SmartMeasurer` | 1 frame | Contrôle complet, accès à `measuredChild` |
-| `SimpleMeasurer` | 1 frame | Variante simplifiée (enfant auto-superposé) |
-| `MeasuredDecoration` | Aucun | Dessin pur (`Canvas`) dépendant de la taille |
+| `SmartMeasurer` | 1 frame | Full control, access to `measuredChild` |
+| `SimpleMeasurer` | 1 frame | Simplified variant (auto-overlaid child) |
+| `MeasuredDecoration` | None | Pure `Canvas` drawing based on child size |
 
 ## Installation
+
+Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
   smart_measurer: ^0.1.0
 ```
 
-## Utilisation
+## Usage
 
-### SimpleMeasurer — décor qui s'adapte à la taille d'un texte
+### SimpleMeasurer — decoration that adapts to a text's size
 
 ```dart
 import 'package:smart_measurer/smart_measurer.dart';
 
 SimpleMeasurer(
-  child: const Text('Bonjour le monde'),
+  child: const Text('Hello world'),
   builder: (context, size, isPrecise, constraints) {
     return Container(
       width: size.width + 24,
@@ -55,12 +56,12 @@ SimpleMeasurer(
 )
 ```
 
-`isPrecise` vaut `false` pendant la (courte) fenêtre où la taille affichée
-est une estimation — par exemple juste après un changement de contraintes
-externes, avant que la mesure suivante n'arrive. Utilisez ce flag pour, par
-exemple, ne pas animer une transition tant que la taille n'est pas certaine.
+`isPrecise` is `false` during the (brief) window where the displayed size
+is an estimate — for example, right after an external constraint change,
+before the next measurement arrives. Use this flag to, for instance, avoid
+animating a transition until the size is certain.
 
-### SmartMeasurer — contrôle complet
+### SmartMeasurer — full control
 
 ```dart
 SmartMeasurer(
@@ -72,22 +73,22 @@ SmartMeasurer(
           size: size,
           painter: HaloPainter(),
         ),
-        Center(child: measuredChild), // measuredChild inséré une seule fois
+        Center(child: measuredChild), // measuredChild inserted exactly once
       ],
     );
   },
 )
 ```
 
-⚠️ `measuredChild` doit apparaître **exactement une fois** dans l'arbre
-retourné par `builder`. Une insertion multiple lève une erreur Flutter de
-clé dupliquée (comportement voulu : signal immédiat plutôt qu'un bug
-silencieux).
+⚠️ `measuredChild` must appear **exactly once** in the tree returned by
+`builder`. Inserting it multiple times triggers a Flutter duplicate-key
+error (this is intended behavior: an immediate signal rather than a silent
+bug).
 
-### MeasuredDecoration — dessin sans délai
+### MeasuredDecoration — drawing with no delay
 
-Quand vous n'avez besoin que de peindre un fond/halo/bordure dépendant de la
-taille (pas de construire un widget), évitez le délai d'une frame :
+When you only need to paint a background/halo/border that depends on the
+size (not build a widget), avoid the one-frame delay:
 
 ```dart
 MeasuredDecoration(
@@ -101,22 +102,21 @@ MeasuredDecoration(
       paint,
     );
   },
-  child: const Text('Sans délai, jamais de flicker'),
+  child: const Text('No delay, never a flicker'),
 )
 ```
 
-## Estimation personnalisée
+## Custom estimation
 
-Par défaut, l'estimation pendant le délai de mesure réutilise la dernière
-taille précise connue (si compatible avec les nouvelles contraintes), sinon
-retombe sur `Size.zero`. Personnalisez ce comportement avec
-`estimateBuilder` :
+By default, the estimate used during the measurement delay reuses the last
+known precise size (if compatible with the new constraints), otherwise it
+falls back to `Size.zero`. Customize this behavior with `estimateBuilder`:
 
 ```dart
 SimpleMeasurer(
   estimateBuilder: (constraints, previousSize) {
-    // Ex: estimation basée sur le nombre de caractères d'un texte connu,
-    // une largeur moyenne de police, etc.
+    // E.g.: estimate based on the character count of known text,
+    // an average font width, etc.
     return previousSize ?? const Size(100, 40);
   },
   child: const Text('...'),
@@ -124,19 +124,19 @@ SimpleMeasurer(
 )
 ```
 
-## Voir aussi
+## See also
 
-Consultez le dossier [`example/`](example) pour une démo complète des trois
+Check out the [`example/`](example) folder for a full demo of all three
 widgets.
 
-## Limitations connues
+## Known limitations
 
-- `SmartMeasurer` / `SimpleMeasurer` ont un délai d'une frame après tout
-  changement de contraintes externes ou de `child` — c'est une contrainte du
-  pipeline Flutter, pas un bug (voir section "Pourquoi ce package").
-- `MeasuredDecoration` ne peut que dessiner (`Canvas`), pas insérer de
-  nouveaux widgets interactifs.
+- `SmartMeasurer` / `SimpleMeasurer` have a one-frame delay after any
+  change to external constraints or to `child` — this is a constraint of
+  the Flutter pipeline, not a bug (see the "Why this package" section).
+- `MeasuredDecoration` can only draw (`Canvas`), it cannot insert new
+  interactive widgets.
 
-## Contribuer
+## Contributing
 
-Les issues et pull requests sont bienvenues sur le dépôt GitHub du projet.
+Issues and pull requests are welcome on the project's GitHub repository.

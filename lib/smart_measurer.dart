@@ -1,13 +1,14 @@
-/// Mesurez la taille réelle d'un widget et réagissez-y — avec estimation
-/// pendant le délai de mesure, et une variante sans délai pour le dessin pur.
+/// Measure a widget's real size and react to it — with estimation during the
+/// one-frame measurement delay, and a zero-delay variant for pure drawing.
 ///
-/// Trois widgets sont exposés :
-/// - [SmartMeasurer] : contrôle complet, `builder` reçoit le widget mesuré
-///   à insérer manuellement.
-/// - [SimpleMeasurer] : variante simplifiée, l'enfant est automatiquement
-///   superposé dans un [Stack].
-/// - [MeasuredDecoration] : dessine un décor dépendant de la taille de
-///   l'enfant en une seule passe de layout/paint, sans délai d'une frame.
+/// Three widgets are exposed:
+/// - [SmartMeasurer] : full control, the `builder` receives the measured
+///   child and must insert it exactly once.
+/// - [SimpleMeasurer] : simplified variant, the child is automatically
+///   overlaid in a [Stack].
+/// - [MeasuredDecoration] : paints a decoration that depends on the child's
+///   size in a single layout/paint pass, with no frame delay.
+library;
 
 export 'src/smart_measurer_base.dart'
     show SmartMeasurer, SimpleMeasurer, MeasuredDecoration;

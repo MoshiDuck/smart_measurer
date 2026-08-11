@@ -21,12 +21,9 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
 
-flutter:
-  # Ce package n'expose pas d'assets.
-
-# topics: pub.dev n'accepte que des mots-clés d'une liste fermée et validée
-# côté serveur (voir https://pub.dev/policy#terms-of-service pour la liste à
-# jour). Décommentez et ajustez après vérification, par ex. :
-# topics:
-#   - widgets
-#   - layout
+# The pub.dev topics are chosen from an approved list.
+# See https://pub.dev/topics for the latest available topics.
+topics:
+  - widgets
+  - layout
+  - rendering

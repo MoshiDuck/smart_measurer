@@ -3,53 +3,51 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 
 // ---------------------------------------------------------------------------
-// SmartMeasurer (version avancée, avec accès au measuredChild)
+// SmartMeasurer (advanced version, with access to measuredChild)
 // ---------------------------------------------------------------------------
 
-/// Mesure la taille réelle de son enfant et appelle [builder] à chaque changement.
+/// Measures the actual size of its child and calls [builder] on every change.
 ///
-/// ## Fonctionnement
-/// - Un [RenderObject] privé mesure l'enfant. Après chaque layout où la taille
-///   ou les contraintes ont changé, la taille définitive est transmise au [builder].
-/// - La notification est limitée à une par frame.
-/// - Le paramètre `measuredChild` **doit être inséré exactement une fois** dans
-///   l'arbre retourné par le [builder]. Une insertion multiple déclenche une
-///   erreur de clé Flutter (GlobalKey dupliquée).
+/// ## How it works
+/// - A private [RenderObject] measures the child. After every layout where
+///   the size or constraints change, the definitive size is passed to [builder].
+/// - Notifications are limited to one per frame.
+/// - The `measuredChild` parameter **must be inserted exactly once** in the
+///   tree returned by [builder]. Inserting it multiple times triggers a Flutter
+///   key error (duplicate GlobalKey).
 ///
-/// ## Délai d'une frame (limitation incompressible)
-/// Flutter exécute toujours *build* avant *layout* au sein d'une frame. Pour
-/// que [builder] retourne un [Widget] dépendant de la taille de l'enfant, il
-/// faut donc que cette taille ait été mesurée lors d'une frame précédente.
-/// C'est une contrainte du pipeline Flutter, pas une limitation propre à ce
-/// widget : tout mécanisme retournant un [Widget] arbitraire basé sur une
-/// taille mesurée a ce même délai. Si vous n'avez besoin que de *dessiner*
-/// (pas de construire de nouveaux widgets) en fonction de la taille, voir
-/// [MeasuredDecoration], qui n'a aucun délai.
+/// ## One-frame delay (an unavoidable limitation)
+/// Flutter always runs *build* before *layout* within a frame. For [builder]
+/// to return a [Widget] that depends on the child's size, that size must have
+/// been measured in a previous frame. This is a constraint of the Flutter
+/// pipeline, not a limitation of this widget: any mechanism that returns an
+/// arbitrary [Widget] based on a measured size has the same delay. If you only
+/// need to *paint* (not build new widgets) based on the size, see
+/// [MeasuredDecoration], which has no delay at all.
 ///
 /// ## Estimation
-/// - Pendant le laps de temps entre un changement de contraintes et la mesure
-///   suivante, la taille est **estimée** (`isPrecise` = false). Cela garantit
-///   qu'aucune taille obsolète n'est présentée comme précise.
-/// - Si [estimateBuilder] est fourni, il est utilisé pour l'estimation. S'il
-///   lève une exception ou retourne une [Size] invalide (NaN, infinie ou
-///   négative), l'erreur est capturée (avec avertissement en debug) et on
-///   retombe sur l'estimation par défaut plutôt que de faire planter le
-///   layout de toute l'application.
-/// - Sinon, l'estimation repart de [Size.zero] (ou de la dernière taille
-///   compatible si [keepPreviousSizeOnChildChange] est vrai).
-/// - Pour retrouver une estimation basée sur les contraintes max, activez
+/// - During the window between a constraint change and the next measurement,
+///   the size is **estimated** (`isPrecise` = false). This guarantees that no
+///   stale size is presented as precise.
+/// - If [estimateBuilder] is provided, it is used for the estimation. If it
+///   throws an exception or returns an invalid [Size] (NaN, infinite, or
+///   negative), the error is caught (with a warning in debug mode) and the
+///   default estimation falls back.
+/// - Otherwise, the estimation starts from [Size.zero] (or the last
+///   compatible size if [keepPreviousSizeOnChildChange] is true).
+/// - To get the old-style estimation based on max constraints, enable
 ///   [useConstraintsAsInitialEstimate].
 ///
-/// ## Coût de performance
-/// Chaque mesure précise déclenche un `setState` interne, donc un rebuild
-/// complet de tout ce que retourne [builder]. Si ce dernier construit un
-/// sous-arbre coûteux et par ailleurs statique, enveloppez-le dans un
-/// [RepaintBoundary] ou extrayez-le en widget `const`/séparé.
+/// ## Performance cost
+/// Every precise measurement triggers an internal `setState`, which rebuilds
+/// everything returned by [builder]. If [builder] builds an expensive but
+/// otherwise static subtree, wrap it in a [RepaintBoundary] or extract it into
+/// a `const`/separate widget.
 ///
-/// ## Exemple
+/// ## Example
 /// ```dart
 /// SmartMeasurer(
-///   child: Text('Bonjour le monde'),
+///   child: Text('Hello World'),
 ///   builder: (context, measuredChild, size, isPrecise, constraints) {
 ///     return Container(
 ///       width: size.width + 24,
@@ -65,11 +63,11 @@ import 'package:flutter/scheduler.dart';
 /// )
 /// ```
 class SmartMeasurer extends StatefulWidget {
-  /// Le widget dont la taille doit être mesurée.
+  /// The widget whose size should be measured.
   final Widget child;
 
-  /// Construit le résultat affiché. `measuredChild` doit être inséré
-  /// exactement une fois dans l'arbre retourné.
+  /// Builds the displayed result. `measuredChild` must be inserted exactly
+  /// once in the returned tree.
   final Widget Function(
     BuildContext context,
     Widget measuredChild,
@@ -78,22 +76,21 @@ class SmartMeasurer extends StatefulWidget {
     BoxConstraints constraints,
   ) builder;
 
-  /// Fournit une estimation de taille personnalisée pendant les frames sans
-  /// mesure précise disponible.
+  /// Provides a custom size estimation during frames without a precise
+  /// measurement available.
   final Size Function(BoxConstraints constraints, Size? previousSize)?
       estimateBuilder;
 
-  /// Si vrai (par défaut), la dernière taille précise mesurée est réutilisée
-  /// comme estimation lors d'un changement de [child], plutôt que de
-  /// repartir de zéro.
+  /// If true (the default), the last measured precise size is reused as an
+  /// estimation when [child] changes, rather than resetting to zero.
   final bool keepPreviousSizeOnChildChange;
 
-  /// Si vrai, l'estimation initiale (avant toute mesure) se base sur les
-  /// contraintes maximales plutôt que sur [Size.zero].
+  /// If true, the initial estimation (before any measurement) uses the
+  /// maximum constraints instead of [Size.zero].
   final bool useConstraintsAsInitialEstimate;
 
-  /// Crée un [SmartMeasurer] mesurant [child] et déléguant le rendu à
-  /// [builder].
+  /// Creates a [SmartMeasurer] that measures [child] and delegates rendering
+  /// to [builder].
   const SmartMeasurer({
     super.key,
     required this.child,
@@ -107,13 +104,13 @@ class SmartMeasurer extends StatefulWidget {
   State<SmartMeasurer> createState() => _SmartMeasurerState();
 }
 
-/// Regroupe tout ce qui définit une mesure précise valide : la taille
-/// obtenue, les contraintes réellement utilisées pour l'obtenir, et la
-/// génération externe au moment de cette mesure.
+/// Holds everything that defines a valid precise measurement: the obtained
+/// size, the constraints actually used to obtain it, and the external
+/// generation at the time of that measurement.
 ///
-/// Fusionner ces trois valeurs dans un seul objet immuable évite toute
-/// désynchronisation partielle : elles sont toujours remplacées ensemble,
-/// dans un seul `setState`.
+/// Combining these three values into a single immutable object prevents any
+/// partial desynchronization: they are always replaced together in a single
+/// `setState`.
 @immutable
 class _PreciseMeasurement {
   final Size size;
@@ -231,8 +228,8 @@ class _SmartMeasurerState extends State<SmartMeasurer> {
             exception: error,
             stack: stackTrace,
             library: 'smart_measurer',
-            context: ErrorDescription(
-                'lors de l\'appel à SmartMeasurer.estimateBuilder'),
+            context:
+                ErrorDescription('when calling SmartMeasurer.estimateBuilder'),
           ));
           return true;
         }());
@@ -246,8 +243,8 @@ class _SmartMeasurerState extends State<SmartMeasurer> {
       if (estimated != null) {
         assert(() {
           debugPrint(
-            '⚠ SmartMeasurer : estimateBuilder a retourné une taille '
-            'invalide ($estimated). Repli sur l\'estimation par défaut.',
+            '⚠ SmartMeasurer: estimateBuilder returned an invalid '
+            'size ($estimated). Falling back to default estimation.',
           );
           return true;
         }());
@@ -296,32 +293,32 @@ class _SmartMeasurerState extends State<SmartMeasurer> {
     _framesWithoutPreciseSize++;
     if (_framesWithoutPreciseSize == 3) {
       debugPrint(
-        '⚠ SmartMeasurer : aucune mesure précise obtenue après 3 frames.\n'
-        'Causes possibles :\n'
-        '  • measuredChild n\'a pas été inséré dans l\'arbre retourné par le builder.\n'
-        '  • measuredChild est inséré mais dans un sous-arbre qui ne reçoit\n'
-        '    jamais de layout (ex: Offstage, Visibility(visible: false), etc.).\n'
-        '  • Le layout de l\'enfant est simplement lent à se stabiliser — dans ce\n'
-        '    cas ce message est informatif, pas nécessairement une erreur.',
+        '⚠ SmartMeasurer: no precise measurement obtained after 3 frames.\n'
+        'Possible causes:\n'
+        '  • measuredChild was not inserted in the tree returned by the builder.\n'
+        '  • measuredChild is inserted but in a subtree that never receives '
+        'layout (e.g. Offstage, Visibility(visible: false), etc.).\n'
+        '  • The child layout is simply slow to stabilize — in that case '
+        'this message is informational, not necessarily an error.',
       );
     }
   }
 }
 
 // ---------------------------------------------------------------------------
-// SimpleMeasurer (version simplifiée, l'enfant est affiché automatiquement)
+// SimpleMeasurer (simplified version, child is displayed automatically)
 // ---------------------------------------------------------------------------
 
-/// Version simplifiée de [SmartMeasurer] où l'enfant est automatiquement
-/// superposé en [Positioned.fill] dans un [Stack].
+/// A simplified version of [SmartMeasurer] where the child is automatically
+/// overlaid using [Positioned.fill] inside a [Stack].
 ///
-/// Le [builder] retourne uniquement le décor/fond qui s'adapte à la taille
-/// de l'enfant ; l'enfant lui-même est géré pour vous.
+/// [builder] only needs to return the decoration/background that adapts to
+/// the child's size; the child itself is handled for you.
 ///
-/// ## Exemple
+/// ## Example
 /// ```dart
 /// SimpleMeasurer(
-///   child: Text('Bonjour'),
+///   child: Text('Hello'),
 ///   builder: (context, size, isPrecise, constraints) {
 ///     return Container(
 ///       width: size.width + 16,
@@ -332,12 +329,12 @@ class _SmartMeasurerState extends State<SmartMeasurer> {
 /// )
 /// ```
 class SimpleMeasurer extends StatelessWidget {
-  /// Le widget dont la taille doit être mesurée, superposé automatiquement
-  /// au décor retourné par [builder].
+  /// The widget whose size should be measured, automatically overlaid on
+  /// the decoration returned by [builder].
   final Widget child;
 
-  /// Construit uniquement le décor/fond ; l'enfant est géré automatiquement
-  /// et superposé en [Positioned.fill].
+  /// Builds only the decoration/background; the child is managed
+  /// automatically and overlaid with [Positioned.fill].
   final Widget Function(
     BuildContext context,
     Size size,
@@ -345,21 +342,21 @@ class SimpleMeasurer extends StatelessWidget {
     BoxConstraints constraints,
   ) builder;
 
-  /// Fournit une estimation de taille personnalisée pendant les frames sans
-  /// mesure précise disponible. Voir [SmartMeasurer.estimateBuilder].
+  /// Provides a custom size estimation during frames without a precise
+  /// measurement available. See [SmartMeasurer.estimateBuilder].
   final Size Function(BoxConstraints constraints, Size? previousSize)?
       estimateBuilder;
 
-  /// Si vrai (par défaut), la dernière taille précise mesurée est réutilisée
-  /// comme estimation lors d'un changement de [child].
+  /// If true (default), the last precise measured size is reused as an
+  /// estimation when [child] changes.
   final bool keepPreviousSizeOnChildChange;
 
-  /// Si vrai, l'estimation initiale (avant toute mesure) se base sur les
-  /// contraintes maximales plutôt que sur [Size.zero].
+  /// If true, the initial estimation (before any measurement) uses the
+  /// maximum constraints instead of [Size.zero].
   final bool useConstraintsAsInitialEstimate;
 
-  /// Crée un [SimpleMeasurer] mesurant [child] et déléguant le décor à
-  /// [builder].
+  /// Creates a [SimpleMeasurer] that measures [child] and delegates the
+  /// decoration to [builder].
   const SimpleMeasurer({
     super.key,
     required this.child,
@@ -389,22 +386,21 @@ class SimpleMeasurer extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// MeasuredDecoration (zéro délai — dessin pur, pas de nouveaux widgets)
+// MeasuredDecoration (zero delay — pure drawing, no new widgets)
 // ---------------------------------------------------------------------------
 
-/// Peint un décor dépendant de la taille de [child], en une seule passe de
-/// layout/paint — contrairement à [SmartMeasurer] / [SimpleMeasurer], il n'y
-/// a ici **aucun délai d'une frame**, car [painter] ne construit pas de
-/// [Widget] : il dessine directement sur un [Canvas] pendant la phase de
-/// paint, une fois que la taille de l'enfant est déjà connue dans la même
-/// passe de layout.
+/// Paints a decoration that depends on [child]'s size, in a single
+/// layout/paint pass — unlike [SmartMeasurer] / [SimpleMeasurer], there is
+/// **no one-frame delay** here, because [painter] does not build a [Widget]:
+/// it draws directly on a [Canvas] during the paint phase, once the child's
+/// size is already known in the same layout pass.
 ///
-/// Limitation en contrepartie : [painter] ne peut pas produire de nouveaux
-/// widgets interactifs (boutons, texte sélectionnable, etc.), seulement du
-/// dessin (formes, dégradés, ombres...). Pour un besoin de sous-arbre de
-/// widgets réactif à la taille, utilisez [SmartMeasurer].
+/// Limitation in exchange: [painter] cannot produce new interactive widgets
+/// (buttons, selectable text, etc.), only drawing (shapes, gradients,
+/// shadows...). For a subtree of widgets reactive to the size, use
+/// [SmartMeasurer].
 ///
-/// ## Exemple
+/// ## Example
 /// ```dart
 /// MeasuredDecoration(
 ///   painter: (canvas, size) {
@@ -417,20 +413,20 @@ class SimpleMeasurer extends StatelessWidget {
 ///       paint,
 ///     );
 ///   },
-///   child: const Text('Sans délai'),
+///   child: const Text('Without delay'),
 /// )
 /// ```
 class MeasuredDecoration extends SingleChildRenderObjectWidget {
-  /// Dessine derrière (ou devant) l'enfant. `size` est la taille exacte de
-  /// l'enfant, déjà connue au moment de l'appel.
+  /// Draws behind (or in front of) the child. `size` is the exact size of
+  /// the child, already known at the time of the call.
   final void Function(Canvas canvas, Size size) painter;
 
-  /// Si vrai (par défaut), [painter] est appelé avant l'enfant (décor en
-  /// arrière-plan). Si faux, après (overlay au-dessus de l'enfant).
+  /// If true (the default), [painter] is called before the child (background
+  /// decoration). If false, after (overlay on top of the child).
   final bool paintBehindChild;
 
-  /// Crée un [MeasuredDecoration] dessinant [painter] autour de [child],
-  /// sans délai d'une frame.
+  /// Creates a [MeasuredDecoration] that draws [painter] around [child],
+  /// with no frame delay.
   const MeasuredDecoration({
     super.key,
     required Widget child,
@@ -454,10 +450,19 @@ class MeasuredDecoration extends SingleChildRenderObjectWidget {
   }
 }
 
+/// A [RenderObject] that paints a decoration depending on the size of its
+/// child.
+///
+/// Used internally by [MeasuredDecoration].
 class RenderMeasuredDecoration extends RenderProxyBox {
+  /// The drawing function called with the actual size of the child.
   void Function(Canvas canvas, Size size) painter;
+
+  /// If `true`, the decoration is painted behind the child (background);
+  /// if `false`, it is painted in front (overlay).
   bool paintBehindChild;
 
+  /// Creates a [RenderMeasuredDecoration].
   RenderMeasuredDecoration({
     required this.painter,
     required this.paintBehindChild,
@@ -492,7 +497,7 @@ class RenderMeasuredDecoration extends RenderProxyBox {
 }
 
 // ============================================================================
-// Infrastructure de mesure privée (utilisée par SmartMeasurer)
+// Private measurement infrastructure (used by SmartMeasurer)
 // ============================================================================
 
 class _MeasuredChildWidget extends SingleChildRenderObjectWidget {

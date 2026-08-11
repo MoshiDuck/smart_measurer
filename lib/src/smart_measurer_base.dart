@@ -89,6 +89,14 @@ class SmartMeasurer extends StatefulWidget {
   /// maximum constraints instead of [Size.zero].
   final bool useConstraintsAsInitialEstimate;
 
+  /// Optional label for the internal [GlobalKey] that tracks `measuredChild`
+  /// across rebuilds. Purely for debugging: it shows up in the
+  /// duplicate-key error message if `measuredChild` is accidentally
+  /// inserted twice, and in widget tree dumps. Defaults to `'SmartMeasurer'`;
+  /// override it when nesting several [SmartMeasurer] instances so error
+  /// messages and dumps tell them apart.
+  final String? debugLabel;
+
   /// Creates a [SmartMeasurer] that measures [child] and delegates rendering
   /// to [builder].
   const SmartMeasurer({
@@ -98,6 +106,7 @@ class SmartMeasurer extends StatefulWidget {
     this.estimateBuilder,
     this.keepPreviousSizeOnChildChange = true,
     this.useConstraintsAsInitialEstimate = false,
+    this.debugLabel,
   });
 
   @override
@@ -131,14 +140,21 @@ class _SmartMeasurerState extends State<SmartMeasurer> {
   int _currentGeneration = 0;
   BoxConstraints? _lastExternalConstraints;
 
-  final GlobalKey _measuredChildKey = GlobalKey(debugLabel: 'SmartMeasurer');
+  // `late final` so we can read `widget.debugLabel` (unavailable in field
+  // initializers, since `widget` isn't attached yet at that point) while
+  // still keeping the key's identity stable for the whole State lifetime.
+  late final GlobalKey _measuredChildKey =
+      GlobalKey(debugLabel: widget.debugLabel ?? 'SmartMeasurer');
 
   // Debug-only bookkeeping for "no precise measurement" warnings. Tracked by
   // *frame*, not by build: a parent can trigger several rebuilds inside the
   // same frame, and counting builds would make the warning fire far earlier
-  // than "3 frames" actually implies.
+  // than "3 frames" actually implies. A postFrameCallback flag (rather than
+  // SchedulerBinding.currentFrameTimeStamp) is used to detect frame
+  // boundaries, since that getter can assert if ever called outside an
+  // active frame — this flag can't.
   int _framesWithoutPreciseSize = 0;
-  Duration? _lastCheckedFrameTimestamp;
+  bool _countedThisFrame = false;
 
   @override
   void didUpdateWidget(covariant SmartMeasurer oldWidget) {
@@ -179,7 +195,7 @@ class _SmartMeasurerState extends State<SmartMeasurer> {
 
   void _resetDebugCounter() {
     _framesWithoutPreciseSize = 0;
-    _lastCheckedFrameTimestamp = null;
+    _countedThisFrame = false;
   }
 
   @override
@@ -258,8 +274,11 @@ class _SmartMeasurerState extends State<SmartMeasurer> {
       }
     }
 
-    if (previousSize != null &&
-        _isValidForConstraints(previousSize, constraints)) {
+    // BoxConstraints.isSatisfiedBy already treats an unbounded max as
+    // effectively infinite (maxWidth/maxHeight *are* double.infinity when
+    // unbounded), so no separate hasBoundedWidth/hasBoundedHeight handling
+    // is needed here.
+    if (previousSize != null && constraints.isSatisfiedBy(previousSize)) {
       return previousSize;
     }
 
@@ -283,28 +302,16 @@ class _SmartMeasurerState extends State<SmartMeasurer> {
         size.height >= 0;
   }
 
-  bool _isValidForConstraints(Size size, BoxConstraints constraints) {
-    final double maxW =
-        constraints.hasBoundedWidth ? constraints.maxWidth : double.infinity;
-    final double maxH =
-        constraints.hasBoundedHeight ? constraints.maxHeight : double.infinity;
-
-    if (size.width < constraints.minWidth || size.width > maxW) return false;
-    if (size.height < constraints.minHeight || size.height > maxH) {
-      return false;
-    }
-    return true;
-  }
-
   void _checkMissingChild() {
     // Only count once per real frame, even if this build() runs several
     // times within that frame (e.g. because an ancestor rebuilds twice).
-    final Duration currentFrame =
-        SchedulerBinding.instance.currentFrameTimeStamp;
-    if (_lastCheckedFrameTimestamp == currentFrame) {
-      return;
-    }
-    _lastCheckedFrameTimestamp = currentFrame;
+    // The flag is cleared by a postFrameCallback, so the next real frame
+    // is free to count again.
+    if (_countedThisFrame) return;
+    _countedThisFrame = true;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _countedThisFrame = false;
+    });
 
     _framesWithoutPreciseSize++;
     if (_framesWithoutPreciseSize == 3) {
@@ -384,6 +391,10 @@ class SimpleMeasurer extends StatelessWidget {
   /// maximum constraints instead of [Size.zero].
   final bool useConstraintsAsInitialEstimate;
 
+  /// Forwarded to the internal [SmartMeasurer]. See
+  /// [SmartMeasurer.debugLabel].
+  final String? debugLabel;
+
   /// Creates a [SimpleMeasurer] that measures [child] and delegates the
   /// decoration to [builder].
   const SimpleMeasurer({
@@ -394,6 +405,7 @@ class SimpleMeasurer extends StatelessWidget {
     this.estimateBuilder,
     this.keepPreviousSizeOnChildChange = true,
     this.useConstraintsAsInitialEstimate = false,
+    this.debugLabel,
   });
 
   @override
@@ -402,6 +414,7 @@ class SimpleMeasurer extends StatelessWidget {
       estimateBuilder: estimateBuilder,
       keepPreviousSizeOnChildChange: keepPreviousSizeOnChildChange,
       useConstraintsAsInitialEstimate: useConstraintsAsInitialEstimate,
+      debugLabel: debugLabel,
       builder: (context, measuredChild, size, isPrecise, constraints) {
         return Stack(
           alignment: alignment,
@@ -549,6 +562,17 @@ class RenderMeasuredDecoration extends RenderProxyBox {
 
   @override
   bool hitTestSelf(Offset position) => false;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(FlagProperty(
+      'paintBehindChild',
+      value: paintBehindChild,
+      ifTrue: 'paints behind child',
+      ifFalse: 'paints in front of child',
+    ));
+  }
 }
 
 // ============================================================================
@@ -631,9 +655,9 @@ class _RenderMeasuredChild extends RenderProxyBox {
   }
 
   void _scheduleNotification(
-      Size newSize, BoxConstraints constraints, int gen) {
+      Size newSize, BoxConstraints usedConstraints, int gen) {
     _pendingSize = newSize;
-    _pendingConstraints = constraints;
+    _pendingConstraints = usedConstraints;
     _pendingGeneration = gen;
     if (_callbackScheduled) return;
     _callbackScheduled = true;

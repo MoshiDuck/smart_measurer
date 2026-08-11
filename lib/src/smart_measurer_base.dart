@@ -132,7 +132,13 @@ class _SmartMeasurerState extends State<SmartMeasurer> {
   BoxConstraints? _lastExternalConstraints;
 
   final GlobalKey _measuredChildKey = GlobalKey(debugLabel: 'SmartMeasurer');
+
+  // Debug-only bookkeeping for "no precise measurement" warnings. Tracked by
+  // *frame*, not by build: a parent can trigger several rebuilds inside the
+  // same frame, and counting builds would make the warning fire far earlier
+  // than "3 frames" actually implies.
   int _framesWithoutPreciseSize = 0;
+  Duration? _lastCheckedFrameTimestamp;
 
   @override
   void didUpdateWidget(covariant SmartMeasurer oldWidget) {
@@ -173,6 +179,7 @@ class _SmartMeasurerState extends State<SmartMeasurer> {
 
   void _resetDebugCounter() {
     _framesWithoutPreciseSize = 0;
+    _lastCheckedFrameTimestamp = null;
   }
 
   @override
@@ -290,6 +297,15 @@ class _SmartMeasurerState extends State<SmartMeasurer> {
   }
 
   void _checkMissingChild() {
+    // Only count once per real frame, even if this build() runs several
+    // times within that frame (e.g. because an ancestor rebuilds twice).
+    final Duration currentFrame =
+        SchedulerBinding.instance.currentFrameTimeStamp;
+    if (_lastCheckedFrameTimestamp == currentFrame) {
+      return;
+    }
+    _lastCheckedFrameTimestamp = currentFrame;
+
     _framesWithoutPreciseSize++;
     if (_framesWithoutPreciseSize == 3) {
       debugPrint(
@@ -310,10 +326,19 @@ class _SmartMeasurerState extends State<SmartMeasurer> {
 // ---------------------------------------------------------------------------
 
 /// A simplified version of [SmartMeasurer] where the child is automatically
-/// overlaid using [Positioned.fill] inside a [Stack].
+/// overlaid on top of the decoration returned by [builder].
 ///
 /// [builder] only needs to return the decoration/background that adapts to
-/// the child's size; the child itself is handled for you.
+/// the child's size; the child itself is handled for you and is always
+/// measured at its natural size — it is never constrained by the size of the
+/// decoration you return, even if that decoration is itself derived from the
+/// child's measured size. (An earlier version of this widget used
+/// `Positioned.fill`, which forced tight constraints on the child and made
+/// the measurement a tautology — the reported size was really just the size
+/// of the container computed *from* that same size. `UnconstrainedBox` fixes
+/// this: the child is always laid out with no constraints at all, regardless
+/// of what [builder] returns or what constraints the parent of
+/// [SimpleMeasurer] imposes.)
 ///
 /// ## Example
 /// ```dart
@@ -334,13 +359,17 @@ class SimpleMeasurer extends StatelessWidget {
   final Widget child;
 
   /// Builds only the decoration/background; the child is managed
-  /// automatically and overlaid with [Positioned.fill].
+  /// automatically and overlaid on top of it.
   final Widget Function(
     BuildContext context,
     Size size,
     bool isPrecise,
     BoxConstraints constraints,
   ) builder;
+
+  /// Where [child] is positioned within the decoration returned by
+  /// [builder]. Defaults to [Alignment.center].
+  final AlignmentGeometry alignment;
 
   /// Provides a custom size estimation during frames without a precise
   /// measurement available. See [SmartMeasurer.estimateBuilder].
@@ -361,6 +390,7 @@ class SimpleMeasurer extends StatelessWidget {
     super.key,
     required this.child,
     required this.builder,
+    this.alignment = Alignment.center,
     this.estimateBuilder,
     this.keepPreviousSizeOnChildChange = true,
     this.useConstraintsAsInitialEstimate = false,
@@ -374,9 +404,15 @@ class SimpleMeasurer extends StatelessWidget {
       useConstraintsAsInitialEstimate: useConstraintsAsInitialEstimate,
       builder: (context, measuredChild, size, isPrecise, constraints) {
         return Stack(
+          alignment: alignment,
           children: [
             builder(context, size, isPrecise, constraints),
-            Positioned.fill(child: measuredChild),
+            // UnconstrainedBox strips away incoming constraints entirely, so
+            // measuredChild always reports its true natural size — never a
+            // size derived from the decoration that was itself derived from
+            // the measurement. `alignment` on the Stack takes care of
+            // positioning it (e.g. centered) within the decoration.
+            UnconstrainedBox(child: measuredChild),
           ],
         );
       },
@@ -444,6 +480,10 @@ class MeasuredDecoration extends SingleChildRenderObjectWidget {
   @override
   void updateRenderObject(
       BuildContext context, RenderMeasuredDecoration renderObject) {
+    // These are real setters (see below) that call markNeedsPaint() when the
+    // value actually changes, so a rebuild that only swaps out `painter`
+    // (e.g. a new closure capturing a different color) is guaranteed to be
+    // repainted instead of silently keeping the previous frame's drawing.
     renderObject
       ..painter = painter
       ..paintBehindChild = paintBehindChild;
@@ -455,18 +495,33 @@ class MeasuredDecoration extends SingleChildRenderObjectWidget {
 ///
 /// Used internally by [MeasuredDecoration].
 class RenderMeasuredDecoration extends RenderProxyBox {
+  /// Creates a [RenderMeasuredDecoration].
+  RenderMeasuredDecoration({
+    required void Function(Canvas canvas, Size size) painter,
+    required bool paintBehindChild,
+  })  : _painter = painter,
+        _paintBehindChild = paintBehindChild;
+
+  void Function(Canvas canvas, Size size) _painter;
+
   /// The drawing function called with the actual size of the child.
-  void Function(Canvas canvas, Size size) painter;
+  void Function(Canvas canvas, Size size) get painter => _painter;
+  set painter(void Function(Canvas canvas, Size size) value) {
+    if (_painter == value) return;
+    _painter = value;
+    markNeedsPaint();
+  }
+
+  bool _paintBehindChild;
 
   /// If `true`, the decoration is painted behind the child (background);
   /// if `false`, it is painted in front (overlay).
-  bool paintBehindChild;
-
-  /// Creates a [RenderMeasuredDecoration].
-  RenderMeasuredDecoration({
-    required this.painter,
-    required this.paintBehindChild,
-  });
+  bool get paintBehindChild => _paintBehindChild;
+  set paintBehindChild(bool value) {
+    if (_paintBehindChild == value) return;
+    _paintBehindChild = value;
+    markNeedsPaint();
+  }
 
   @override
   void paint(PaintingContext context, Offset offset) {

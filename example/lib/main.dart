@@ -465,7 +465,7 @@ class _HeroHeader extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
-          BoxShadow(color: Colors.indigo.withOpacity(0.3), blurRadius: 24, offset: const Offset(0, 10)),
+          BoxShadow(color: Colors.indigo.withValues(alpha: 0.3), blurRadius: 24, offset: const Offset(0, 10)),
         ],
       ),
       child: Column(
@@ -476,7 +476,7 @@ class _HeroHeader extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
+                  color: Colors.white.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: const Icon(Icons.straighten, color: Colors.white, size: 26),
@@ -522,7 +522,7 @@ class _HeroChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.18),
+        color: Colors.white.withValues(alpha: 0.18),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(label, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600)),
@@ -559,9 +559,9 @@ class _DemoCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.4)),
+        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.4)),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 16, offset: const Offset(0, 6)),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 16, offset: const Offset(0, 6)),
         ],
       ),
       child: Column(
@@ -572,7 +572,7 @@ class _DemoCard extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(color: color.withOpacity(0.12), borderRadius: BorderRadius.circular(14)),
+                decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(14)),
                 child: Icon(icon, color: color),
               ),
               const SizedBox(width: 14),
@@ -594,7 +594,7 @@ class _DemoCard extends StatelessWidget {
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(color: color.withOpacity(0.06), borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(color: color.withValues(alpha: 0.06), borderRadius: BorderRadius.circular(10)),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -622,7 +622,7 @@ class _PrecisionPill extends StatelessWidget {
       duration: const Duration(milliseconds: 150),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: c.withOpacity(0.12),
+        color: c.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: c),
       ),
@@ -708,7 +708,7 @@ class _SimpleMeasurerDemoState extends State<_SimpleMeasurerDemo> {
                     ),
                     borderRadius: BorderRadius.circular((size.height + 26) / 2),
                     boxShadow: [
-                      BoxShadow(color: Colors.indigo.withOpacity(0.25), blurRadius: 14, offset: const Offset(0, 6)),
+                      BoxShadow(color: Colors.indigo.withValues(alpha: 0.25), blurRadius: 14, offset: const Offset(0, 6)),
                     ],
                   ),
                 );
@@ -820,7 +820,7 @@ class _IconCircleDemoState extends State<_IconCircleDemo> {
                           : [Colors.grey.shade400, Colors.grey.shade500],
                     ),
                     boxShadow: [
-                      BoxShadow(color: Colors.deepPurple.withOpacity(0.3), blurRadius: 16, offset: const Offset(0, 8)),
+                      BoxShadow(color: Colors.deepPurple.withValues(alpha: 0.3), blurRadius: 16, offset: const Offset(0, 8)),
                     ],
                   ),
                   child: measuredChild,
@@ -967,7 +967,7 @@ class _EstimateStrategyDemoState extends State<_EstimateStrategyDemo> {
                   height: h,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: isPrecise ? Colors.teal.withOpacity(0.08) : Colors.grey.withOpacity(0.15),
+                    color: isPrecise ? Colors.teal.withValues(alpha: 0.08) : Colors.grey.withValues(alpha: 0.15),
                     border: Border.all(color: isPrecise ? Colors.teal : Colors.grey.shade500, width: 2),
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -980,7 +980,7 @@ class _EstimateStrategyDemoState extends State<_EstimateStrategyDemo> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.85),
+                              color: Colors.white.withValues(alpha: 0.85),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -1202,7 +1202,7 @@ class _GlowDecorationDemoState extends State<_GlowDecorationDemo> {
 
                 if (_paintBehind) {
                   final Paint glow = Paint()
-                    ..color = Colors.deepOrange.withOpacity(0.45)
+                    ..color = Colors.deepOrange.withValues(alpha: 0.45)
                     ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 18);
                   canvas.drawRRect(rrect, glow);
 
@@ -1425,13 +1425,13 @@ class _OverflowSafeDemoState extends State<_OverflowSafeDemo> {
         if (!_scrollable && !_constrain)
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(color: Colors.red.withOpacity(0.08), borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(10)),
             child: Text(t("warn_no_scroll_no_constrain"), style: const TextStyle(fontSize: 12)),
           ),
         if (!_scrollable && _constrain)
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(color: Colors.blue.withOpacity(0.08), borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(color: Colors.blue.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(10)),
             child: Text(
               _shrinkToFit ? t("info_shrink_true") : t("info_shrink_false"),
               style: const TextStyle(fontSize: 12),
@@ -1678,7 +1678,7 @@ class _DebugConsoleState extends State<_DebugConsole> {
                             children: [
                               TextSpan(
                                 text: "[${_fmtTime(e.time)}] ",
-                                style: TextStyle(color: onSurface.withOpacity(0.5)),
+                                style: TextStyle(color: onSurface.withValues(alpha: 0.5)),
                               ),
                               TextSpan(text: "${e.tag}: ", style: TextStyle(color: e.color, fontWeight: FontWeight.bold)),
                               TextSpan(text: e.message),

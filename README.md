@@ -17,7 +17,7 @@ Le package expose quatre widgets, du plus simple au plus complet.
 
 ```yaml
 dependencies:
-  smart_measurer: ^1.0.3
+  smart_measurer: ^1.0.4
 ```
 
 ```dart
@@ -111,7 +111,8 @@ page bruyantes ou qui changent rapidement.
 | `ignorePointerDuringEstimate` | Désactive les interactions tant que `isPrecise` vaut `false` |
 | `placeholderBuilder` | Affiché tant qu'aucune mesure précise n'a jamais été obtenue |
 | `debugPaintEstimatedSize` | Bordure rouge ou verte de debug, selon que la mesure est estimée ou précise |
-| `constrainToAvailableSpace` | Contraint le résultat à l'espace disponible du parent |
+| `constrainToAvailableSpace` | Empêche le résultat de dépasser visuellement l'espace du parent (clip ou, si `shrinkToFit` est vrai, mise à l'échelle) |
+| `shrinkToFit`               | Quand `constrainToAvailableSpace` est actif, réduit le contenu pour qu'il tienne dans l'espace disponible au lieu de le découper |
 | `scrollable` / `scrollDirection` | Enveloppe le résultat dans un `SingleChildScrollView` |
 | `debugLabel` | Étiquette de la `GlobalKey` interne, utile en debug avec plusieurs `SmartMeasurer` imbriqués |
 

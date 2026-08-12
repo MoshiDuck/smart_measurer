@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4] - 2026-08-11
+
+### Added
+
+- **`shrinkToFit`** on `SmartMeasurer` / `SimpleMeasurer` — when
+  `constrainToAvailableSpace` is true and content does not fit the available
+  space on the non-scrollable axis, setting `shrinkToFit` to true scales the
+  content down to fit (like `BoxFit.scaleDown`) instead of clipping it.
+  Defaults to false (clipping).
+
+### Changed
+
+- **`constrainToAvailableSpace` without scrolling now actually prevents
+  visual overflow.** Previously it only applied a `ConstrainedBox` with
+  the same max constraints, which is a no‑op on Flex children that overflow
+  their own bounds. Now a `ClipRect` (and optionally `FittedBox` via
+  `shrinkToFit`) ensures the content is visually clipped or shrunk to the
+  available space, matching the flag’s contract.
+
 ## [0.1.3] - 2026-08-11
 
 ### Added

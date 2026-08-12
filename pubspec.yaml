@@ -3,7 +3,7 @@ description: >-
   Measure a widget's real size and react to it, with frame-accurate
   precision tracking and a zero-delay, size-aware decoration painter
   for pure-drawing use cases.
-version: 0.1.3
+version: 0.1.4
 homepage: https://github.com/MoshiDuck/smart_measurer
 repository: https://github.com/MoshiDuck/smart_measurer
 issue_tracker: https://github.com/MoshiDuck/smart_measurer/issues

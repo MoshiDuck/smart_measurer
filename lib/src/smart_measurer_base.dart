@@ -156,17 +156,17 @@ class SmartMeasurer extends StatefulWidget {
   /// Not called at all while a [placeholderBuilder] is active and no precise
   /// measurement has ever been obtained.
   final Widget Function(
-      BuildContext context,
-      Widget measuredChild,
-      Size size,
-      bool isPrecise,
-      BoxConstraints constraints,
-      ) builder;
+    BuildContext context,
+    Widget measuredChild,
+    Size size,
+    bool isPrecise,
+    BoxConstraints constraints,
+  ) builder;
 
   /// Provides a custom size estimation during frames without a precise
   /// measurement available. Takes priority over [estimateStrategy].
   final Size Function(BoxConstraints constraints, Size? previousSize)?
-  estimateBuilder;
+      estimateBuilder;
 
   /// If true (the default), the last measured precise size is reused as an
   /// estimation when [child] changes, rather than resetting to zero.
@@ -243,7 +243,7 @@ class SmartMeasurer extends StatefulWidget {
   /// background (offstage) while the placeholder is visible, so the
   /// transition to the real content happens as soon as layout is ready.
   final Widget Function(BuildContext context, BoxConstraints constraints)?
-  placeholderBuilder;
+      placeholderBuilder;
 
   /// Debug-only: when true, paints a colored border around the result of
   /// [builder] — red while `isPrecise` is false, green once precise — to
@@ -361,7 +361,7 @@ class _SmartMeasurerState extends State<SmartMeasurer>
   // initializers, since `widget` isn't attached yet at that point) while
   // still keeping the key's identity stable for the whole State lifetime.
   late final GlobalKey _measuredChildKey =
-  GlobalKey(debugLabel: widget.debugLabel ?? 'SmartMeasurer');
+      GlobalKey(debugLabel: widget.debugLabel ?? 'SmartMeasurer');
 
   // Debug-only bookkeeping for "no precise measurement" warnings. Tracked by
   // *frame*, not by build: a parent can trigger several rebuilds inside the
@@ -579,10 +579,10 @@ class _SmartMeasurerState extends State<SmartMeasurer>
               constraints: constraints,
               child: widget.shrinkToFit
                   ? FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: result,
-              )
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: result,
+                    )
                   : result,
             ),
           );
@@ -635,7 +635,7 @@ class _SmartMeasurerState extends State<SmartMeasurer>
             stack: stackTrace,
             library: 'smart_measurer',
             context:
-            ErrorDescription('when calling SmartMeasurer.estimateBuilder'),
+                ErrorDescription('when calling SmartMeasurer.estimateBuilder'),
           ));
           return true;
         }());
@@ -650,7 +650,7 @@ class _SmartMeasurerState extends State<SmartMeasurer>
         assert(() {
           _warn(
             '⚠ SmartMeasurer: estimateBuilder returned an invalid '
-                'size ($estimated). Falling back to default estimation.',
+            'size ($estimated). Falling back to default estimation.',
           );
           return true;
         }());
@@ -667,9 +667,9 @@ class _SmartMeasurerState extends State<SmartMeasurer>
         return Size.zero;
 
       case SmartMeasurerEstimateStrategy.previousSize:
-      // BoxConstraints.isSatisfiedBy already treats an unbounded max as
-      // effectively infinite, so no separate hasBoundedWidth/Height
-      // handling is needed here.
+        // BoxConstraints.isSatisfiedBy already treats an unbounded max as
+        // effectively infinite, so no separate hasBoundedWidth/Height
+        // handling is needed here.
         if (previousSize != null && constraints.isSatisfiedBy(previousSize)) {
           return previousSize;
         }
@@ -682,8 +682,8 @@ class _SmartMeasurerState extends State<SmartMeasurer>
         assert(() {
           _warn(
             '⚠ SmartMeasurer: estimateStrategy is .custom but no valid '
-                'estimateBuilder was provided/returned a valid size. '
-                'Falling back to Size.zero.',
+            'estimateBuilder was provided/returned a valid size. '
+            'Falling back to Size.zero.',
           );
           return true;
         }());
@@ -723,12 +723,12 @@ class _SmartMeasurerState extends State<SmartMeasurer>
     if (_framesWithoutPreciseSize == 3) {
       _warn(
         '⚠ SmartMeasurer: no precise measurement obtained after 3 frames.\n'
-            'Possible causes:\n'
-            '  • measuredChild was not inserted in the tree returned by the builder.\n'
-            '  • measuredChild is inserted but in a subtree that never receives '
-            'layout (e.g. Offstage, Visibility(visible: false), etc.).\n'
-            '  • The child layout is simply slow to stabilize — in that case '
-            'this message is informational, not necessarily an error.',
+        'Possible causes:\n'
+        '  • measuredChild was not inserted in the tree returned by the builder.\n'
+        '  • measuredChild is inserted but in a subtree that never receives '
+        'layout (e.g. Offstage, Visibility(visible: false), etc.).\n'
+        '  • The child layout is simply slow to stabilize — in that case '
+        'this message is informational, not necessarily an error.',
       );
     }
   }
@@ -779,11 +779,11 @@ class SimpleMeasurer extends StatelessWidget {
   /// Builds only the decoration/background; the child is managed
   /// automatically and overlaid on top of it.
   final Widget Function(
-      BuildContext context,
-      Size size,
-      bool isPrecise,
-      BoxConstraints constraints,
-      ) builder;
+    BuildContext context,
+    Size size,
+    bool isPrecise,
+    BoxConstraints constraints,
+  ) builder;
 
   /// Where [child] is positioned within the decoration returned by
   /// [builder]. Defaults to [Alignment.center].
@@ -792,7 +792,7 @@ class SimpleMeasurer extends StatelessWidget {
   /// Provides a custom size estimation during frames without a precise
   /// measurement available. See [SmartMeasurer.estimateBuilder].
   final Size Function(BoxConstraints constraints, Size? previousSize)?
-  estimateBuilder;
+      estimateBuilder;
 
   /// If true (default), the last precise measured size is reused as an
   /// estimation when [child] changes.
@@ -832,7 +832,7 @@ class SimpleMeasurer extends StatelessWidget {
   /// top, once available) until the first precise measurement ever lands.
   /// See [SmartMeasurer.placeholderBuilder].
   final Widget Function(BuildContext context, BoxConstraints constraints)?
-  placeholderBuilder;
+      placeholderBuilder;
 
   /// See [SmartMeasurer.debugPaintEstimatedSize].
   final bool debugPaintEstimatedSize;
@@ -966,12 +966,12 @@ class SmartMeasurerGroup extends StatefulWidget {
   /// once every child has reported a real measurement for the current
   /// layout pass.
   final Widget Function(
-      BuildContext context,
-      List<Widget> measuredChildren,
-      List<Size> sizes,
-      bool allPrecise,
-      BoxConstraints constraints,
-      ) builder;
+    BuildContext context,
+    List<Widget> measuredChildren,
+    List<Size> sizes,
+    bool allPrecise,
+    BoxConstraints constraints,
+  ) builder;
 
   /// Optional label prefix for the internal per-child [GlobalKey]s. See
   /// [SmartMeasurer.debugLabel].
@@ -992,17 +992,17 @@ class SmartMeasurerGroup extends StatefulWidget {
 class _SmartMeasurerGroupState extends State<SmartMeasurerGroup> {
   late List<GlobalKey> _keys = _makeKeys(widget.children.length);
   late List<Size?> _sizes =
-  List<Size?>.filled(widget.children.length, null, growable: false);
+      List<Size?>.filled(widget.children.length, null, growable: false);
 
   int _generation = 0;
   BoxConstraints? _lastConstraints;
 
   List<GlobalKey> _makeKeys(int count) => List.generate(
-    count,
+        count,
         (i) => GlobalKey(
-      debugLabel: '${widget.debugLabel ?? 'SmartMeasurerGroup'}[$i]',
-    ),
-  );
+          debugLabel: '${widget.debugLabel ?? 'SmartMeasurerGroup'}[$i]',
+        ),
+      );
 
   @override
   void didUpdateWidget(covariant SmartMeasurerGroup oldWidget) {
@@ -1010,7 +1010,7 @@ class _SmartMeasurerGroupState extends State<SmartMeasurerGroup> {
     if (widget.children.length != oldWidget.children.length) {
       _keys = _makeKeys(widget.children.length);
       _sizes =
-      List<Size?>.filled(widget.children.length, null, growable: false);
+          List<Size?>.filled(widget.children.length, null, growable: false);
     }
   }
 
@@ -1031,7 +1031,7 @@ class _SmartMeasurerGroupState extends State<SmartMeasurerGroup> {
           _generation++;
           _lastConstraints = constraints;
           _sizes =
-          List<Size?>.filled(widget.children.length, null, growable: false);
+              List<Size?>.filled(widget.children.length, null, growable: false);
         }
 
         final measuredChildren = <Widget>[
@@ -1067,10 +1067,10 @@ class _SmartMeasurerGroupState extends State<SmartMeasurerGroup> {
 /// Signature for [MeasuredDecoration.painter]: draws on [canvas] using the
 /// child's exact [size] and the [constraints] it was laid out with.
 typedef MeasuredDecorationPainter = void Function(
-    Canvas canvas,
-    Size size,
-    BoxConstraints constraints,
-    );
+  Canvas canvas,
+  Size size,
+  BoxConstraints constraints,
+);
 
 /// Paints a decoration that depends on [child]'s size, in a single
 /// layout/paint pass — unlike [SmartMeasurer] / [SimpleMeasurer], there is
@@ -1273,7 +1273,7 @@ class RenderMeasuredDecoration extends RenderProxyBox {
 
 class _MeasuredChildWidget extends SingleChildRenderObjectWidget {
   final void Function(Size size, BoxConstraints constraints, int generation)
-  onLayoutDone;
+      onLayoutDone;
   final int generation;
 
   const _MeasuredChildWidget({
@@ -1285,15 +1285,15 @@ class _MeasuredChildWidget extends SingleChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) => _RenderMeasuredChild(
-    onLayoutDone: onLayoutDone,
-    generation: generation,
-  );
+        onLayoutDone: onLayoutDone,
+        generation: generation,
+      );
 
   @override
   void updateRenderObject(
-      BuildContext context,
-      _RenderMeasuredChild renderObject,
-      ) {
+    BuildContext context,
+    _RenderMeasuredChild renderObject,
+  ) {
     renderObject.onLayoutDone = onLayoutDone;
     renderObject.generation = generation;
   }
@@ -1301,7 +1301,7 @@ class _MeasuredChildWidget extends SingleChildRenderObjectWidget {
 
 class _RenderMeasuredChild extends RenderProxyBox {
   void Function(Size size, BoxConstraints constraints, int generation)
-  onLayoutDone;
+      onLayoutDone;
 
   int _generation;
   int get generation => _generation;
@@ -1354,7 +1354,7 @@ class _RenderMeasuredChild extends RenderProxyBox {
     if (_callbackScheduled) return;
     _callbackScheduled = true;
     SchedulerBinding.instance.addPostFrameCallback(
-          (_) {
+      (_) {
         _callbackScheduled = false;
         if (owner == null) return;
         final Size? s = _pendingSize;

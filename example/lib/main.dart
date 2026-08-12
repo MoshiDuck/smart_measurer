@@ -39,7 +39,9 @@ class DebugLog extends ChangeNotifier {
   /// (natural reading order), for copying to the clipboard.
   String toPlainText() {
     final ordered = _entries.reversed;
-    return ordered.map((e) => "[${_fmtTime(e.time)}] ${e.tag}: ${e.message}").join("\n");
+    return ordered
+        .map((e) => "[${_fmtTime(e.time)}] ${e.tag}: ${e.message}")
+        .join("\n");
   }
 }
 
@@ -74,93 +76,158 @@ String t(String key) => appLocale.t(key);
 class Tr {
   static const Map<String, Map<AppLang, String>> map = {
     // App / shell
-    "app_title": {AppLang.en: "smart_measurer — Test Suite", AppLang.fr: "smart_measurer — Suite de tests"},
-    "toggle_theme": {AppLang.en: "Toggle theme", AppLang.fr: "Changer de thème"},
+    "app_title": {
+      AppLang.en: "smart_measurer — Test Suite",
+      AppLang.fr: "smart_measurer — Suite de tests"
+    },
+    "toggle_theme": {
+      AppLang.en: "Toggle theme",
+      AppLang.fr: "Changer de thème"
+    },
     "toggle_lang": {AppLang.en: "Translate", AppLang.fr: "Traduire"},
 
     // Hero header
     "hero_desc": {
-      AppLang.en: "Interactive test suite covering every widget and every option of the package: "
-          "measurement, estimation, animation, groups, delay-free decoration and safety guards.",
-      AppLang.fr: "Suite de tests interactive couvrant chaque widget et chaque option du package : "
-          "mesure, estimation, animation, groupes, décoration sans délai et garde-fous anti-bug.",
+      AppLang.en:
+          "Interactive test suite covering every widget and every option of the package: "
+              "measurement, estimation, animation, groups, delay-free decoration and safety guards.",
+      AppLang.fr:
+          "Suite de tests interactive couvrant chaque widget et chaque option du package : "
+              "mesure, estimation, animation, groupes, décoration sans délai et garde-fous anti-bug.",
     },
     "chip_no_flicker": {AppLang.en: "No flicker", AppLang.fr: "Sans flicker"},
-    "chip_external_controller": {AppLang.en: "External controller", AppLang.fr: "Contrôleur externe"},
-    "chip_zero_delay": {AppLang.en: "0-delay (paint)", AppLang.fr: "0 délai (peinture)"},
-    "chip_measured_groups": {AppLang.en: "Measured groups", AppLang.fr: "Groupes mesurés"},
-    "chip_overflow_safe": {AppLang.en: "Overflow-safe", AppLang.fr: "Anti-débordement"},
+    "chip_external_controller": {
+      AppLang.en: "External controller",
+      AppLang.fr: "Contrôleur externe"
+    },
+    "chip_zero_delay": {
+      AppLang.en: "0-delay (paint)",
+      AppLang.fr: "0 délai (peinture)"
+    },
+    "chip_measured_groups": {
+      AppLang.en: "Measured groups",
+      AppLang.fr: "Groupes mesurés"
+    },
+    "chip_overflow_safe": {
+      AppLang.en: "Overflow-safe",
+      AppLang.fr: "Anti-débordement"
+    },
 
     // Card 1
-    "title1": {AppLang.en: "1 · SimpleMeasurer", AppLang.fr: "1 · SimpleMeasurer"},
+    "title1": {
+      AppLang.en: "1 · SimpleMeasurer",
+      AppLang.fr: "1 · SimpleMeasurer"
+    },
     "subtitle1": {
       AppLang.en: "The bubble resizes itself around the measured text.",
-      AppLang.fr: "La bulle se redimensionne toute seule autour du texte mesuré.",
+      AppLang.fr:
+          "La bulle se redimensionne toute seule autour du texte mesuré.",
     },
     "footnote1": {
-      AppLang.en: "The child is automatically overlaid: you only manage the decoration.",
-      AppLang.fr: "Le child est automatiquement superposé : vous ne gérez que la décoration.",
+      AppLang.en:
+          "The child is automatically overlaid: you only manage the decoration.",
+      AppLang.fr:
+          "Le child est automatiquement superposé : vous ne gérez que la décoration.",
     },
 
     // Card 2
-    "title2": {AppLang.en: "2 · SmartMeasurer + controller", AppLang.fr: "2 · SmartMeasurer + contrôleur"},
+    "title2": {
+      AppLang.en: "2 · SmartMeasurer + controller",
+      AppLang.fr: "2 · SmartMeasurer + contrôleur"
+    },
     "subtitle2": {
-      AppLang.en: "Circle that follows the icon's size, read externally via a SmartMeasurerController.",
-      AppLang.fr: "Cercle qui suit la taille de l'icône, lu depuis l'extérieur via un SmartMeasurerController.",
+      AppLang.en:
+          "Circle that follows the icon's size, read externally via a SmartMeasurerController.",
+      AppLang.fr:
+          "Cercle qui suit la taille de l'icône, lu depuis l'extérieur via un SmartMeasurerController.",
     },
     "footnote2": {
-      AppLang.en: "Disable \u201ckeep previous size\u201d then change icon to see the loading placeholder "
-          "again (placeholderBuilder).",
-      AppLang.fr: "Désactivez « conserver la taille précédente » puis changez d'icône pour revoir le "
-          "placeholder de chargement (placeholderBuilder).",
+      AppLang.en:
+          "Disable \u201ckeep previous size\u201d then change icon to see the loading placeholder "
+              "again (placeholderBuilder).",
+      AppLang.fr:
+          "Désactivez « conserver la taille précédente » puis changez d'icône pour revoir le "
+              "placeholder de chargement (placeholderBuilder).",
     },
 
     // Card 3
-    "title3": {AppLang.en: "3 · Estimation strategies & debounce", AppLang.fr: "3 · Stratégies d'estimation & debounce"},
+    "title3": {
+      AppLang.en: "3 · Estimation strategies & debounce",
+      AppLang.fr: "3 · Stratégies d'estimation & debounce"
+    },
     "subtitle3": {
-      AppLang.en: "Observe how the size is guessed as long as no precise measurement is available.",
-      AppLang.fr: "Observez comment la taille est devinée tant qu'aucune mesure précise n'est disponible.",
+      AppLang.en:
+          "Observe how the size is guessed as long as no precise measurement is available.",
+      AppLang.fr:
+          "Observez comment la taille est devinée tant qu'aucune mesure précise n'est disponible.",
     },
     "footnote3": {
-      AppLang.en: "Height is not bounded here: the \u201cConstraints\u201d strategy will therefore give an "
-          "estimated height of 0 during the estimation phase.",
-      AppLang.fr: "La hauteur n'est pas bornée ici : la stratégie « Contraintes » donnera donc une "
-          "hauteur estimée de 0 pendant la phase d'estimation.",
+      AppLang.en:
+          "Height is not bounded here: the \u201cConstraints\u201d strategy will therefore give an "
+              "estimated height of 0 during the estimation phase.",
+      AppLang.fr:
+          "La hauteur n'est pas bornée ici : la stratégie « Contraintes » donnera donc une "
+              "hauteur estimée de 0 pendant la phase d'estimation.",
     },
 
     // Card 4
-    "title4": {AppLang.en: "4 · SmartMeasurerGroup", AppLang.fr: "4 · SmartMeasurerGroup"},
+    "title4": {
+      AppLang.en: "4 · SmartMeasurerGroup",
+      AppLang.fr: "4 · SmartMeasurerGroup"
+    },
     "subtitle4": {
-      AppLang.en: "A sliding tab indicator, computed from the measured widths of each label.",
-      AppLang.fr: "Un indicateur d'onglet glissant, calculé à partir des largeurs mesurées de chaque libellé.",
+      AppLang.en:
+          "A sliding tab indicator, computed from the measured widths of each label.",
+      AppLang.fr:
+          "Un indicateur d'onglet glissant, calculé à partir des largeurs mesurées de chaque libellé.",
     },
 
     // Card 5
-    "title5": {AppLang.en: "5 · MeasuredDecoration", AppLang.fr: "5 · MeasuredDecoration"},
+    "title5": {
+      AppLang.en: "5 · MeasuredDecoration",
+      AppLang.fr: "5 · MeasuredDecoration"
+    },
     "subtitle5": {
-      AppLang.en: "Direct canvas painting, without the one-frame delay typical of widget builders.",
-      AppLang.fr: "Peinture directe sur canvas, sans le délai d'une frame propre aux builders de widgets.",
+      AppLang.en:
+          "Direct canvas painting, without the one-frame delay typical of widget builders.",
+      AppLang.fr:
+          "Peinture directe sur canvas, sans le délai d'une frame propre aux builders de widgets.",
     },
 
     // Card 6
-    "title6": {AppLang.en: "6 · Debug tools", AppLang.fr: "6 · Outils de debug"},
+    "title6": {
+      AppLang.en: "6 · Debug tools",
+      AppLang.fr: "6 · Outils de debug"
+    },
     "subtitle6": {
-      AppLang.en: "ignorePointerDuringEstimate + debugPaintEstimatedSize, tested under real conditions.",
-      AppLang.fr: "ignorePointerDuringEstimate + debugPaintEstimatedSize, testés en conditions réelles.",
+      AppLang.en:
+          "ignorePointerDuringEstimate + debugPaintEstimatedSize, tested under real conditions.",
+      AppLang.fr:
+          "ignorePointerDuringEstimate + debugPaintEstimatedSize, testés en conditions réelles.",
     },
 
     // Card 7
-    "title7": {AppLang.en: "7 · Overflow safety", AppLang.fr: "7 · Anti-débordement"},
+    "title7": {
+      AppLang.en: "7 · Overflow safety",
+      AppLang.fr: "7 · Anti-débordement"
+    },
     "subtitle7": {
-      AppLang.en: "scrollable + constrainToAvailableSpace to never cause a visible overflow.",
-      AppLang.fr: "scrollable + constrainToAvailableSpace pour ne jamais provoquer d'overflow visuel.",
+      AppLang.en:
+          "scrollable + constrainToAvailableSpace to never cause a visible overflow.",
+      AppLang.fr:
+          "scrollable + constrainToAvailableSpace pour ne jamais provoquer d'overflow visuel.",
     },
 
     // Card 8
-    "title8": {AppLang.en: "8 · Real case: notification badge", AppLang.fr: "8 · Cas réel : badge de notification"},
+    "title8": {
+      AppLang.en: "8 · Real case: notification badge",
+      AppLang.fr: "8 · Cas réel : badge de notification"
+    },
     "subtitle8": {
-      AppLang.en: "The badge widens smoothly as the number goes from 1 to several digits.",
-      AppLang.fr: "Le badge s'élargit en douceur quand le nombre passe de 1 à plusieurs chiffres.",
+      AppLang.en:
+          "The badge widens smoothly as the number goes from 1 to several digits.",
+      AppLang.fr:
+          "Le badge s'élargit en douceur quand le nombre passe de 1 à plusieurs chiffres.",
     },
 
     // Precision pill
@@ -169,7 +236,10 @@ class Tr {
 
     // Demo 1 — messages
     "msg1": {AppLang.en: "Hello!", AppLang.fr: "Bonjour !"},
-    "msg2": {AppLang.en: "Nice to see you 👋", AppLang.fr: "Ravi de vous voir 👋"},
+    "msg2": {
+      AppLang.en: "Nice to see you 👋",
+      AppLang.fr: "Ravi de vous voir 👋"
+    },
     "msg3": {
       AppLang.en: "A noticeably longer message to test stretching",
       AppLang.fr: "Un message nettement plus long pour tester l'étirement",
@@ -182,18 +252,32 @@ class Tr {
     },
 
     // Demo 2
-    "measured_size": {AppLang.en: "Measured size", AppLang.fr: "Taille mesurée"},
+    "measured_size": {
+      AppLang.en: "Measured size",
+      AppLang.fr: "Taille mesurée"
+    },
 
     // Demo 3
     "strategy_zero": {AppLang.en: "Zero", AppLang.fr: "Zéro"},
     "strategy_previous": {AppLang.en: "Prev. size", AppLang.fr: "Taille préc."},
-    "strategy_constraints": {AppLang.en: "Constraints", AppLang.fr: "Contraintes"},
+    "strategy_constraints": {
+      AppLang.en: "Constraints",
+      AppLang.fr: "Contraintes"
+    },
     "strategy_custom": {AppLang.en: "Custom", AppLang.fr: "Personnalisée"},
-    "fixed_content": {AppLang.en: "Fixed content\n160 × 60", AppLang.fr: "Contenu fixe\n160 × 60"},
-    "debounce_title": {AppLang.en: "Debounce (900 ms)", AppLang.fr: "Debounce (900 ms)"},
+    "fixed_content": {
+      AppLang.en: "Fixed content\n160 × 60",
+      AppLang.fr: "Contenu fixe\n160 × 60"
+    },
+    "debounce_title": {
+      AppLang.en: "Debounce (900 ms)",
+      AppLang.fr: "Debounce (900 ms)"
+    },
     "debounce_subtitle": {
-      AppLang.en: "notifyDebounce batches measurements while dragging the slider",
-      AppLang.fr: "notifyDebounce regroupe les mesures pendant le glissement du slider",
+      AppLang.en:
+          "notifyDebounce batches measurements while dragging the slider",
+      AppLang.fr:
+          "notifyDebounce regroupe les mesures pendant le glissement du slider",
     },
     "simulate_invalid_title": {
       AppLang.en: "Simulate an invalid estimate (NaN)",
@@ -201,21 +285,31 @@ class Tr {
     },
     "simulate_invalid_subtitle": {
       AppLang.en: "Triggers the automatic fallback + a console warning",
-      AppLang.fr: "Déclenche le repli automatique + un avertissement en console",
+      AppLang.fr:
+          "Déclenche le repli automatique + un avertissement en console",
     },
 
     // Demo 4 — tabs
     "tab_home": {AppLang.en: "Home", AppLang.fr: "Accueil"},
     "tab_explore": {AppLang.en: "Explore", AppLang.fr: "Explorer"},
-    "tab_notifications": {AppLang.en: "Notifications", AppLang.fr: "Notifications"},
+    "tab_notifications": {
+      AppLang.en: "Notifications",
+      AppLang.fr: "Notifications"
+    },
     "tab_profile": {AppLang.en: "Profile", AppLang.fr: "Profil"},
     "selected_label": {AppLang.en: "Selected", AppLang.fr: "Sélectionné"},
 
     // Demo 5
     "text_no_delay": {AppLang.en: "No delay", AppLang.fr: "Aucun délai"},
-    "text_instant_paint": {AppLang.en: "Instant paint", AppLang.fr: "Peinture instantanée"},
+    "text_instant_paint": {
+      AppLang.en: "Instant paint",
+      AppLang.fr: "Peinture instantanée"
+    },
     "text_glow": {AppLang.en: "Glow", AppLang.fr: "Glow"},
-    "paint_behind_title": {AppLang.en: "Paint behind the text", AppLang.fr: "Peindre derrière le texte"},
+    "paint_behind_title": {
+      AppLang.en: "Paint behind the text",
+      AppLang.fr: "Peindre derrière le texte"
+    },
     "paint_behind_subtitle": {
       AppLang.en: "paintBehindChild — disable for an overlaid outline",
       AppLang.fr: "paintBehindChild — désactivez pour un contour superposé",
@@ -223,7 +317,10 @@ class Tr {
 
     // Demo 6
     "touch_me": {AppLang.en: "Touch me", AppLang.fr: "Toucher-moi"},
-    "taps_recorded": {AppLang.en: "Taps recorded", AppLang.fr: "Taps enregistrés"},
+    "taps_recorded": {
+      AppLang.en: "Taps recorded",
+      AppLang.fr: "Taps enregistrés"
+    },
     "resize_button": {
       AppLang.en: "Resize (≈700 ms of estimation)",
       AppLang.fr: "Redimensionner (≈700 ms d'estimation)",
@@ -232,29 +329,38 @@ class Tr {
       AppLang.en: "Ignore taps during estimation",
       AppLang.fr: "Ignorer les taps pendant l'estimation",
     },
-    "debug_border_title": {AppLang.en: "Debug border (red/green)", AppLang.fr: "Bordure de debug (rouge/vert)"},
+    "debug_border_title": {
+      AppLang.en: "Debug border (red/green)",
+      AppLang.fr: "Bordure de debug (rouge/vert)"
+    },
 
     // Demo 7
     "item_label": {AppLang.en: "Item", AppLang.fr: "Élément"},
     "warn_no_scroll_no_constrain": {
-      AppLang.en: "⚠️ Without scrolling or constraint, a row that is too wide can overflow "
-          "(RenderFlex overflow) — this is exactly what \u201cscrollable\u201d or \u201cconstrain to "
-          "available space\u201d prevents.",
-      AppLang.fr: "⚠️ Sans défilement ni contrainte, une rangée trop large peut déborder "
-          "(RenderFlex overflow) — c'est exactement ce que « scrollable » ou "
-          "« contraindre à l'espace disponible » permettent d'éviter.",
+      AppLang.en:
+          "⚠️ Without scrolling or constraint, a row that is too wide can overflow "
+              "(RenderFlex overflow) — this is exactly what \u201cscrollable\u201d or \u201cconstrain to "
+              "available space\u201d prevents.",
+      AppLang.fr:
+          "⚠️ Sans défilement ni contrainte, une rangée trop large peut déborder "
+              "(RenderFlex overflow) — c'est exactement ce que « scrollable » ou "
+              "« contraindre à l'espace disponible » permettent d'éviter.",
     },
     "info_shrink_true": {
-      AppLang.en: "ℹ️ Content that is too wide is shrunk (shrinkToFit) to fit the available space, "
-          "instead of overflowing or being clipped.",
-      AppLang.fr: "ℹ️ Le contenu trop large est rétréci (shrinkToFit) pour tenir dans l'espace disponible, "
-          "au lieu de déborder ou d'être découpé.",
+      AppLang.en:
+          "ℹ️ Content that is too wide is shrunk (shrinkToFit) to fit the available space, "
+              "instead of overflowing or being clipped.",
+      AppLang.fr:
+          "ℹ️ Le contenu trop large est rétréci (shrinkToFit) pour tenir dans l'espace disponible, "
+              "au lieu de déborder ou d'être découpé.",
     },
     "info_shrink_false": {
-      AppLang.en: "ℹ️ Content that is too wide is clipped rather than visually overflowing. "
-          "Enable \u201cshrink items\u201d to make it fit by scaling it down instead.",
-      AppLang.fr: "ℹ️ Le contenu trop large est découpé (clip) plutôt que de déborder visuellement. "
-          "Activez « rétrécir les éléments » pour le faire tenir en le réduisant à la place.",
+      AppLang.en:
+          "ℹ️ Content that is too wide is clipped rather than visually overflowing. "
+              "Enable \u201cshrink items\u201d to make it fit by scaling it down instead.",
+      AppLang.fr:
+          "ℹ️ Le contenu trop large est découpé (clip) plutôt que de déborder visuellement. "
+              "Activez « rétrécir les éléments » pour le faire tenir en le réduisant à la place.",
     },
     "scrollable_title": {AppLang.en: "Scrollable", AppLang.fr: "Scrollable"},
     "constrain_title": {
@@ -262,38 +368,55 @@ class Tr {
       AppLang.fr: "Contraindre à l'espace disponible",
     },
     "constrain_subtitle": {
-      AppLang.en: "constrainToAvailableSpace — when \u201cscrollable\u201d is on, it limits the axis "
-          "perpendicular to scrolling; otherwise it prevents any visible overflow "
-          "(clip, or shrinking if enabled below).",
-      AppLang.fr: "constrainToAvailableSpace — quand « scrollable » est actif, limite l'axe "
-          "perpendiculaire au défilement ; sinon, empêche tout débordement visuel "
-          "(clip, ou rétrécissement si activé ci-dessous).",
+      AppLang.en:
+          "constrainToAvailableSpace — when \u201cscrollable\u201d is on, it limits the axis "
+              "perpendicular to scrolling; otherwise it prevents any visible overflow "
+              "(clip, or shrinking if enabled below).",
+      AppLang.fr:
+          "constrainToAvailableSpace — quand « scrollable » est actif, limite l'axe "
+              "perpendiculaire au défilement ; sinon, empêche tout débordement visuel "
+              "(clip, ou rétrécissement si activé ci-dessous).",
     },
-    "shrink_to_fit_title": {AppLang.en: "Shrink items (shrinkToFit)", AppLang.fr: "Rétrécir les éléments (shrinkToFit)"},
+    "shrink_to_fit_title": {
+      AppLang.en: "Shrink items (shrinkToFit)",
+      AppLang.fr: "Rétrécir les éléments (shrinkToFit)"
+    },
     "shrink_to_fit_subtitle": {
-      AppLang.en: "Only has an effect without scrolling and with \u201cconstrain\u201d enabled: instead of "
-          "clipping content that is too wide, it is scaled down to fit.",
-      AppLang.fr: "N'a d'effet que sans défilement et avec « contraindre » activé : "
-          "au lieu de découper le contenu trop large, il est mis à l'échelle pour tenir.",
+      AppLang.en:
+          "Only has an effect without scrolling and with \u201cconstrain\u201d enabled: instead of "
+              "clipping content that is too wide, it is scaled down to fit.",
+      AppLang.fr:
+          "N'a d'effet que sans défilement et avec « contraindre » activé : "
+              "au lieu de découper le contenu trop large, il est mis à l'échelle pour tenir.",
     },
 
     // Demo 8
     "clear_button": {AppLang.en: "Clear", AppLang.fr: "Vider"},
 
     // Debug console
-    "debug_console": {AppLang.en: "Debug console", AppLang.fr: "Console de debug"},
+    "debug_console": {
+      AppLang.en: "Debug console",
+      AppLang.fr: "Console de debug"
+    },
     "copy_all": {AppLang.en: "Copy all", AppLang.fr: "Copier tout"},
-    "console_copied": {AppLang.en: "Console copied.", AppLang.fr: "Console copiée."},
+    "console_copied": {
+      AppLang.en: "Console copied.",
+      AppLang.fr: "Console copiée."
+    },
     "clear_console": {AppLang.en: "Clear", AppLang.fr: "Vider"},
     "no_events_yet": {
       AppLang.en: "No events yet — trigger a test above.",
-      AppLang.fr: "Aucun évènement pour le moment — déclenchez un test ci-dessus.",
+      AppLang.fr:
+          "Aucun évènement pour le moment — déclenchez un test ci-dessus.",
     },
 
     // Debug log tags
     "tag_strategies": {AppLang.en: "Strategies", AppLang.fr: "Stratégies"},
     "tag_debug_tools": {AppLang.en: "Debug tools", AppLang.fr: "Outils debug"},
-    "tag_overflow_safe": {AppLang.en: "Overflow-safe", AppLang.fr: "Anti-débordement"},
+    "tag_overflow_safe": {
+      AppLang.en: "Overflow-safe",
+      AppLang.fr: "Anti-débordement"
+    },
     "new_size_prefix": {AppLang.en: "New size", AppLang.fr: "Nouvelle taille"},
   };
 }
@@ -316,7 +439,8 @@ class _TestAppState extends State<TestApp> {
 
   void _toggleTheme() {
     setState(() {
-      _themeMode = _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+      _themeMode =
+          _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
     });
   }
 
@@ -326,15 +450,22 @@ class _TestAppState extends State<TestApp> {
       title: "smart_measurer — tests",
       debugShowCheckedModeBanner: false,
       themeMode: _themeMode,
-      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true, brightness: Brightness.light),
-      darkTheme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true, brightness: Brightness.dark),
+      theme: ThemeData(
+          colorSchemeSeed: Colors.indigo,
+          useMaterial3: true,
+          brightness: Brightness.light),
+      darkTheme: ThemeData(
+          colorSchemeSeed: Colors.indigo,
+          useMaterial3: true,
+          brightness: Brightness.dark),
       home: HomePage(themeMode: _themeMode, onToggleTheme: _toggleTheme),
     );
   }
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key, required this.themeMode, required this.onToggleTheme});
+  const HomePage(
+      {super.key, required this.themeMode, required this.onToggleTheme});
 
   final ThemeMode themeMode;
   final VoidCallback onToggleTheme;
@@ -362,7 +493,9 @@ class HomePage extends StatelessWidget {
               IconButton(
                 tooltip: t("toggle_theme"),
                 onPressed: onToggleTheme,
-                icon: Icon(themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode),
+                icon: Icon(themeMode == ThemeMode.dark
+                    ? Icons.light_mode
+                    : Icons.dark_mode),
               ),
             ],
           ),
@@ -465,7 +598,10 @@ class _HeroHeader extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
-          BoxShadow(color: Colors.indigo.withValues(alpha: 0.3), blurRadius: 24, offset: const Offset(0, 10)),
+          BoxShadow(
+              color: Colors.indigo.withValues(alpha: 0.3),
+              blurRadius: 24,
+              offset: const Offset(0, 10)),
         ],
       ),
       child: Column(
@@ -479,13 +615,17 @@ class _HeroHeader extends StatelessWidget {
                   color: Colors.white.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Icon(Icons.straighten, color: Colors.white, size: 26),
+                child:
+                    const Icon(Icons.straighten, color: Colors.white, size: 26),
               ),
               const SizedBox(width: 12),
               const Expanded(
                 child: Text(
                   "smart_measurer",
-                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -493,7 +633,8 @@ class _HeroHeader extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             t("hero_desc"),
-            style: const TextStyle(color: Colors.white70, fontSize: 14, height: 1.4),
+            style: const TextStyle(
+                color: Colors.white70, fontSize: 14, height: 1.4),
           ),
           const SizedBox(height: 14),
           Wrap(
@@ -525,7 +666,9 @@ class _HeroChip extends StatelessWidget {
         color: Colors.white.withValues(alpha: 0.18),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(label, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600)),
+      child: Text(label,
+          style: const TextStyle(
+              color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600)),
     );
   }
 }
@@ -559,9 +702,13 @@ class _DemoCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.4)),
+        border: Border.all(
+            color: Theme.of(context).dividerColor.withValues(alpha: 0.4)),
         boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 16, offset: const Offset(0, 6)),
+          BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 16,
+              offset: const Offset(0, 6)),
         ],
       ),
       child: Column(
@@ -572,7 +719,9 @@ class _DemoCard extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(14)),
+                decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(14)),
                 child: Icon(icon, color: color),
               ),
               const SizedBox(width: 14),
@@ -580,9 +729,17 @@ class _DemoCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                    Text(title,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold)),
                     const SizedBox(height: 4),
-                    Text(subtitle, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).hintColor)),
+                    Text(subtitle,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(color: Theme.of(context).hintColor)),
                   ],
                 ),
               ),
@@ -594,13 +751,17 @@ class _DemoCard extends StatelessWidget {
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(color: color.withValues(alpha: 0.06), borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.06),
+                  borderRadius: BorderRadius.circular(10)),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Icon(Icons.info_outline, size: 16, color: color),
                   const SizedBox(width: 8),
-                  Expanded(child: Text(footnote!, style: Theme.of(context).textTheme.bodySmall)),
+                  Expanded(
+                      child: Text(footnote!,
+                          style: Theme.of(context).textTheme.bodySmall)),
                 ],
               ),
             ),
@@ -629,11 +790,15 @@ class _PrecisionPill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(isPrecise ? Icons.check_circle : Icons.hourglass_top, size: 14, color: c.shade700_(isPrecise)),
+          Icon(isPrecise ? Icons.check_circle : Icons.hourglass_top,
+              size: 14, color: c.shade700_(isPrecise)),
           const SizedBox(width: 6),
           Text(
             isPrecise ? t("precise") : t("estimated"),
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: c.shade700_(isPrecise)),
+            style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: c.shade700_(isPrecise)),
           ),
         ],
       ),
@@ -645,7 +810,8 @@ extension on Color {
   // Small helper to get a darker, readable shade on a light background,
   // without depending on MaterialColor.shade700 (unavailable for plain
   // Colors.green / Colors.orange depending on the import context).
-  Color shade700_(bool isPrecise) => isPrecise ? const Color(0xFF2E7D32) : const Color(0xFFE65100);
+  Color shade700_(bool isPrecise) =>
+      isPrecise ? const Color(0xFF2E7D32) : const Color(0xFFE65100);
 }
 
 // =============================================================================
@@ -684,14 +850,18 @@ class _SimpleMeasurerDemoState extends State<_SimpleMeasurerDemo> {
               controller: _controller,
               keepPreviousSizeOnChildChange: _keepPrevious,
               debugLabel: "MessageBubble",
-              onDebugWarning: (m) => debugLog.add("SimpleMeasurer", m, Colors.orange),
+              onDebugWarning: (m) =>
+                  debugLog.add("SimpleMeasurer", m, Colors.orange),
               child: Padding(
                 key: ValueKey(_messageIndex),
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Text(
                   messages[_messageIndex],
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: _fontSize, fontWeight: FontWeight.w600, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: _fontSize,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white),
                 ),
               ),
               builder: (context, size, isPrecise, constraints) {
@@ -708,7 +878,10 @@ class _SimpleMeasurerDemoState extends State<_SimpleMeasurerDemo> {
                     ),
                     borderRadius: BorderRadius.circular((size.height + 26) / 2),
                     boxShadow: [
-                      BoxShadow(color: Colors.indigo.withValues(alpha: 0.25), blurRadius: 14, offset: const Offset(0, 6)),
+                      BoxShadow(
+                          color: Colors.indigo.withValues(alpha: 0.25),
+                          blurRadius: 14,
+                          offset: const Offset(0, 6)),
                     ],
                   ),
                 );
@@ -719,7 +892,8 @@ class _SimpleMeasurerDemoState extends State<_SimpleMeasurerDemo> {
         const SizedBox(height: 16),
         AnimatedBuilder(
           animation: _controller,
-          builder: (context, _) => _PrecisionPill(isPrecise: _controller.isPrecise),
+          builder: (context, _) =>
+              _PrecisionPill(isPrecise: _controller.isPrecise),
         ),
         const SizedBox(height: 16),
         Row(
@@ -727,7 +901,11 @@ class _SimpleMeasurerDemoState extends State<_SimpleMeasurerDemo> {
             const Icon(Icons.format_size, size: 18),
             const SizedBox(width: 8),
             Expanded(
-              child: Slider(value: _fontSize, min: 12, max: 34, onChanged: (v) => setState(() => _fontSize = v)),
+              child: Slider(
+                  value: _fontSize,
+                  min: 12,
+                  max: 34,
+                  onChanged: (v) => setState(() => _fontSize = v)),
             ),
             SizedBox(width: 32, child: Text("${_fontSize.round()}")),
           ],
@@ -770,7 +948,12 @@ class _IconCircleDemo extends StatefulWidget {
 }
 
 class _IconCircleDemoState extends State<_IconCircleDemo> {
-  static const List<IconData> _icons = [Icons.star, Icons.favorite, Icons.bolt, Icons.emoji_emotions];
+  static const List<IconData> _icons = [
+    Icons.star,
+    Icons.favorite,
+    Icons.bolt,
+    Icons.emoji_emotions
+  ];
 
   double _iconSize = 48;
   int _iconIndex = 0;
@@ -797,15 +980,23 @@ class _IconCircleDemoState extends State<_IconCircleDemo> {
               animationDuration: const Duration(milliseconds: 280),
               animationCurve: Curves.easeOutBack,
               debugLabel: "IconCircle",
-              onDebugWarning: (m) => debugLog.add("SmartMeasurer", m, Colors.orange),
+              onDebugWarning: (m) =>
+                  debugLog.add("SmartMeasurer", m, Colors.orange),
               placeholderBuilder: (context, constraints) => Container(
                 width: 96,
                 height: 96,
                 alignment: Alignment.center,
-                decoration: BoxDecoration(color: Colors.deepPurple.shade50, shape: BoxShape.circle),
-                child: const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.4)),
+                decoration: BoxDecoration(
+                    color: Colors.deepPurple.shade50, shape: BoxShape.circle),
+                child: const SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: CircularProgressIndicator(strokeWidth: 2.4)),
               ),
-              child: Icon(_icons[_iconIndex], key: ValueKey(_iconIndex), size: _iconSize, color: Colors.white),
+              child: Icon(_icons[_iconIndex],
+                  key: ValueKey(_iconIndex),
+                  size: _iconSize,
+                  color: Colors.white),
               builder: (context, measuredChild, size, isPrecise, constraints) {
                 final double d = math.max(size.width, size.height) + 42;
                 return Container(
@@ -816,11 +1007,17 @@ class _IconCircleDemoState extends State<_IconCircleDemo> {
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: isPrecise
-                          ? [Colors.deepPurple.shade400, Colors.deepPurple.shade700]
+                          ? [
+                              Colors.deepPurple.shade400,
+                              Colors.deepPurple.shade700
+                            ]
                           : [Colors.grey.shade400, Colors.grey.shade500],
                     ),
                     boxShadow: [
-                      BoxShadow(color: Colors.deepPurple.withValues(alpha: 0.3), blurRadius: 16, offset: const Offset(0, 8)),
+                      BoxShadow(
+                          color: Colors.deepPurple.withValues(alpha: 0.3),
+                          blurRadius: 16,
+                          offset: const Offset(0, 8)),
                     ],
                   ),
                   child: measuredChild,
@@ -849,7 +1046,11 @@ class _IconCircleDemoState extends State<_IconCircleDemo> {
             const Icon(Icons.zoom_out_map, size: 18),
             const SizedBox(width: 8),
             Expanded(
-              child: Slider(value: _iconSize, min: 24, max: 88, onChanged: (v) => setState(() => _iconSize = v)),
+              child: Slider(
+                  value: _iconSize,
+                  min: 24,
+                  max: 88,
+                  onChanged: (v) => setState(() => _iconSize = v)),
             ),
           ],
         ),
@@ -863,11 +1064,20 @@ class _IconCircleDemoState extends State<_IconCircleDemo> {
                   duration: const Duration(milliseconds: 150),
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: _iconIndex == i ? Colors.deepPurple.shade100 : Colors.grey.shade100,
+                    color: _iconIndex == i
+                        ? Colors.deepPurple.shade100
+                        : Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: _iconIndex == i ? Colors.deepPurple : Colors.transparent, width: 2),
+                    border: Border.all(
+                        color: _iconIndex == i
+                            ? Colors.deepPurple
+                            : Colors.transparent,
+                        width: 2),
                   ),
-                  child: Icon(_icons[i], color: _iconIndex == i ? Colors.deepPurple : Colors.grey.shade600),
+                  child: Icon(_icons[i],
+                      color: _iconIndex == i
+                          ? Colors.deepPurple
+                          : Colors.grey.shade600),
                 ),
               ),
           ],
@@ -898,7 +1108,8 @@ class _EstimateStrategyDemo extends StatefulWidget {
 }
 
 class _EstimateStrategyDemoState extends State<_EstimateStrategyDemo> {
-  SmartMeasurerEstimateStrategy _strategy = SmartMeasurerEstimateStrategy.previousSize;
+  SmartMeasurerEstimateStrategy _strategy =
+      SmartMeasurerEstimateStrategy.previousSize;
   double _wrapperWidth = 260;
   bool _useDebounce = true;
   bool _simulateInvalidEstimate = false;
@@ -941,21 +1152,28 @@ class _EstimateStrategyDemoState extends State<_EstimateStrategyDemo> {
             child: SmartMeasurer(
               controller: _controller,
               estimateStrategy: _strategy,
-              estimateBuilder: _strategy == SmartMeasurerEstimateStrategy.custom ? _customEstimate : null,
-              notifyDebounce: _useDebounce ? const Duration(milliseconds: 900) : null,
+              estimateBuilder: _strategy == SmartMeasurerEstimateStrategy.custom
+                  ? _customEstimate
+                  : null,
+              notifyDebounce:
+                  _useDebounce ? const Duration(milliseconds: 900) : null,
               sizeChangeThreshold: 0.5,
               debugLabel: "StrategyDemo",
-              onDebugWarning: (m) => debugLog.add(t("tag_strategies"), m, Colors.deepOrange),
+              onDebugWarning: (m) =>
+                  debugLog.add(t("tag_strategies"), m, Colors.deepOrange),
               child: Container(
                 key: const ValueKey("fixed-content"),
                 width: 160,
                 height: 60,
                 alignment: Alignment.center,
-                decoration: BoxDecoration(color: Colors.teal.shade600, borderRadius: BorderRadius.circular(10)),
+                decoration: BoxDecoration(
+                    color: Colors.teal.shade600,
+                    borderRadius: BorderRadius.circular(10)),
                 child: Text(
                   t("fixed_content"),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600),
                 ),
               ),
               builder: (context, measuredChild, size, isPrecise, constraints) {
@@ -967,25 +1185,35 @@ class _EstimateStrategyDemoState extends State<_EstimateStrategyDemo> {
                   height: h,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: isPrecise ? Colors.teal.withValues(alpha: 0.08) : Colors.grey.withValues(alpha: 0.15),
-                    border: Border.all(color: isPrecise ? Colors.teal : Colors.grey.shade500, width: 2),
+                    color: isPrecise
+                        ? Colors.teal.withValues(alpha: 0.08)
+                        : Colors.grey.withValues(alpha: 0.15),
+                    border: Border.all(
+                        color: isPrecise ? Colors.teal : Colors.grey.shade500,
+                        width: 2),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ClipRect(
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        Opacity(opacity: isPrecise ? 1 : 0.25, child: measuredChild),
+                        Opacity(
+                            opacity: isPrecise ? 1 : 0.25,
+                            child: measuredChild),
                         if (!isPrecise)
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
                               color: Colors.white.withValues(alpha: 0.85),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
                               "≈ ${size.width.toStringAsFixed(0)}×${size.height.toStringAsFixed(0)}",
-                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black87),
+                              style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87),
                             ),
                           ),
                       ],
@@ -999,7 +1227,8 @@ class _EstimateStrategyDemoState extends State<_EstimateStrategyDemo> {
         const SizedBox(height: 12),
         AnimatedBuilder(
           animation: _controller,
-          builder: (context, _) => _PrecisionPill(isPrecise: _controller.isPrecise),
+          builder: (context, _) =>
+              _PrecisionPill(isPrecise: _controller.isPrecise),
         ),
         const SizedBox(height: 16),
         Wrap(
@@ -1021,7 +1250,11 @@ class _EstimateStrategyDemoState extends State<_EstimateStrategyDemo> {
             const Icon(Icons.swap_horiz, size: 18),
             const SizedBox(width: 8),
             Expanded(
-              child: Slider(value: _wrapperWidth, min: 140, max: 380, onChanged: (v) => setState(() => _wrapperWidth = v)),
+              child: Slider(
+                  value: _wrapperWidth,
+                  min: 140,
+                  max: 380,
+                  onChanged: (v) => setState(() => _wrapperWidth = v)),
             ),
           ],
         ),
@@ -1075,7 +1308,8 @@ class _SlidingTabsDemoState extends State<_SlidingTabsDemo> {
         SmartMeasurerGroup(
           debugLabel: "TabsIndicator",
           children: [
-            for (int i = 0; i < tabs.length; i++) _TabLabel(text: tabs[i], selected: i == _selected),
+            for (int i = 0; i < tabs.length; i++)
+              _TabLabel(text: tabs[i], selected: i == _selected),
           ],
           builder: (context, measuredChildren, sizes, allPrecise, constraints) {
             const double spacing = 4;
@@ -1088,7 +1322,9 @@ class _SlidingTabsDemoState extends State<_SlidingTabsDemo> {
 
             return Container(
               padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(16)),
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(16)),
               // The total width of the labels (measured) is only known after
               // the first layout, and can exceed the available space on a
               // narrow screen (or with long labels). A Row with
@@ -1121,7 +1357,10 @@ class _SlidingTabsDemoState extends State<_SlidingTabsDemo> {
                       children: [
                         for (int i = 0; i < measuredChildren.length; i++)
                           Padding(
-                            padding: EdgeInsets.only(right: i == measuredChildren.length - 1 ? 0 : spacing),
+                            padding: EdgeInsets.only(
+                                right: i == measuredChildren.length - 1
+                                    ? 0
+                                    : spacing),
                             child: GestureDetector(
                               behavior: HitTestBehavior.opaque,
                               onTap: () => setState(() => _selected = i),
@@ -1137,7 +1376,8 @@ class _SlidingTabsDemoState extends State<_SlidingTabsDemo> {
           },
         ),
         const SizedBox(height: 12),
-        Text("${t("selected_label")}: ${tabs[_selected]}", style: Theme.of(context).textTheme.bodySmall),
+        Text("${t("selected_label")}: ${tabs[_selected]}",
+            style: Theme.of(context).textTheme.bodySmall),
       ],
     );
   }
@@ -1197,8 +1437,10 @@ class _GlowDecorationDemoState extends State<_GlowDecorationDemo> {
                 Colors.teal,
               ),
               painter: (canvas, size, constraints) {
-                final Rect rect = Rect.fromLTWH(-18, -14, size.width + 36, size.height + 28);
-                final RRect rrect = RRect.fromRectAndRadius(rect, Radius.circular(_radius));
+                final Rect rect =
+                    Rect.fromLTWH(-18, -14, size.width + 36, size.height + 28);
+                final RRect rrect =
+                    RRect.fromRectAndRadius(rect, Radius.circular(_radius));
 
                 if (_paintBehind) {
                   final Paint glow = Paint()
@@ -1207,8 +1449,10 @@ class _GlowDecorationDemoState extends State<_GlowDecorationDemo> {
                   canvas.drawRRect(rrect, glow);
 
                   final Paint fill = Paint()
-                    ..shader = LinearGradient(colors: [Colors.deepOrange.shade400, Colors.orange.shade300])
-                        .createShader(rect);
+                    ..shader = LinearGradient(colors: [
+                      Colors.deepOrange.shade400,
+                      Colors.orange.shade300
+                    ]).createShader(rect);
                   canvas.drawRRect(rrect, fill);
                 } else {
                   final Paint stroke = Paint()
@@ -1218,7 +1462,8 @@ class _GlowDecorationDemoState extends State<_GlowDecorationDemo> {
                   canvas.drawRRect(rrect, stroke);
 
                   final Paint dot = Paint()..color = Colors.deepOrange;
-                  canvas.drawCircle(Offset(rect.right - 10, rect.top + 10), 4, dot);
+                  canvas.drawCircle(
+                      Offset(rect.right - 10, rect.top + 10), 4, dot);
                 }
               },
               child: Text(
@@ -1226,7 +1471,8 @@ class _GlowDecorationDemoState extends State<_GlowDecorationDemo> {
                 style: TextStyle(
                   fontSize: _fontSize,
                   fontWeight: FontWeight.w700,
-                  color: _paintBehind ? Colors.white : Colors.deepOrange.shade700,
+                  color:
+                      _paintBehind ? Colors.white : Colors.deepOrange.shade700,
                 ),
               ),
             ),
@@ -1238,7 +1484,11 @@ class _GlowDecorationDemoState extends State<_GlowDecorationDemo> {
             const Icon(Icons.format_size, size: 18),
             const SizedBox(width: 8),
             Expanded(
-              child: Slider(value: _fontSize, min: 14, max: 32, onChanged: (v) => setState(() => _fontSize = v)),
+              child: Slider(
+                  value: _fontSize,
+                  min: 14,
+                  max: 32,
+                  onChanged: (v) => setState(() => _fontSize = v)),
             ),
           ],
         ),
@@ -1247,7 +1497,11 @@ class _GlowDecorationDemoState extends State<_GlowDecorationDemo> {
             const Icon(Icons.rounded_corner, size: 18),
             const SizedBox(width: 8),
             Expanded(
-              child: Slider(value: _radius, min: 0, max: 40, onChanged: (v) => setState(() => _radius = v)),
+              child: Slider(
+                  value: _radius,
+                  min: 0,
+                  max: 40,
+                  onChanged: (v) => setState(() => _radius = v)),
             ),
           ],
         ),
@@ -1255,8 +1509,15 @@ class _GlowDecorationDemoState extends State<_GlowDecorationDemo> {
           spacing: 8,
           runSpacing: 8,
           children: [
-            for (final key in ["text_no_delay", "text_instant_paint", "text_glow"])
-              ChoiceChip(label: Text(t(key)), selected: _textKey == key, onSelected: (_) => setState(() => _textKey = key)),
+            for (final key in [
+              "text_no_delay",
+              "text_instant_paint",
+              "text_glow"
+            ])
+              ChoiceChip(
+                  label: Text(t(key)),
+                  selected: _textKey == key,
+                  onSelected: (_) => setState(() => _textKey = key)),
           ],
         ),
         const SizedBox(height: 4),
@@ -1311,13 +1572,16 @@ class _DebugToolsDemoState extends State<_DebugToolsDemo> {
               estimateStrategy: SmartMeasurerEstimateStrategy.previousSize,
               notifyDebounce: const Duration(milliseconds: 700),
               debugLabel: "DebugToolsButton",
-              onDebugWarning: (m) => debugLog.add(t("tag_debug_tools"), m, Colors.deepOrange),
+              onDebugWarning: (m) =>
+                  debugLog.add(t("tag_debug_tools"), m, Colors.deepOrange),
               child: Container(
                 key: const ValueKey("tap-target"),
                 height: 52,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(horizontal: 18),
-                child: Text(t("touch_me"), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                child: Text(t("touch_me"),
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w600)),
               ),
               builder: (context, measuredChild, size, isPrecise, constraints) {
                 return GestureDetector(
@@ -1326,7 +1590,9 @@ class _DebugToolsDemoState extends State<_DebugToolsDemo> {
                     width: size.width,
                     height: math.max(size.height, 40),
                     decoration: BoxDecoration(
-                      color: isPrecise ? Colors.blue.shade600 : Colors.blueGrey.shade300,
+                      color: isPrecise
+                          ? Colors.blue.shade600
+                          : Colors.blueGrey.shade300,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: measuredChild,
@@ -1339,13 +1605,16 @@ class _DebugToolsDemoState extends State<_DebugToolsDemo> {
         const SizedBox(height: 14),
         AnimatedBuilder(
           animation: _controller,
-          builder: (context, _) => _PrecisionPill(isPrecise: _controller.isPrecise),
+          builder: (context, _) =>
+              _PrecisionPill(isPrecise: _controller.isPrecise),
         ),
         const SizedBox(height: 8),
-        Text("${t("taps_recorded")}: $_tapCount", style: Theme.of(context).textTheme.bodyMedium),
+        Text("${t("taps_recorded")}: $_tapCount",
+            style: Theme.of(context).textTheme.bodyMedium),
         const SizedBox(height: 12),
         OutlinedButton.icon(
-          onPressed: () => setState(() => _panelWidth = _panelWidth == 220 ? 260 : 220),
+          onPressed: () =>
+              setState(() => _panelWidth = _panelWidth == 220 ? 260 : 220),
           icon: const Icon(Icons.swap_horiz),
           label: Text(t("resize_button")),
         ),
@@ -1394,21 +1663,25 @@ class _OverflowSafeDemoState extends State<_OverflowSafeDemo> {
       children: [
         Container(
           padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300), borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(12)),
           child: SmartMeasurer(
             scrollable: _scrollable,
             scrollDirection: Axis.horizontal,
             constrainToAvailableSpace: _constrain,
             shrinkToFit: _shrinkToFit,
             debugLabel: "OverflowSafeRow",
-            onDebugWarning: (m) => debugLog.add(t("tag_overflow_safe"), m, Colors.deepOrange),
+            onDebugWarning: (m) =>
+                debugLog.add(t("tag_overflow_safe"), m, Colors.deepOrange),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 for (int i = 0; i < _itemCount; i++)
                   Container(
                     margin: const EdgeInsets.only(right: 8),
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 10),
                     decoration: BoxDecoration(
                       color: Colors.pink.shade50,
                       borderRadius: BorderRadius.circular(20),
@@ -1418,20 +1691,26 @@ class _OverflowSafeDemoState extends State<_OverflowSafeDemo> {
                   ),
               ],
             ),
-            builder: (context, measuredChild, size, isPrecise, constraints) => measuredChild,
+            builder: (context, measuredChild, size, isPrecise, constraints) =>
+                measuredChild,
           ),
         ),
         const SizedBox(height: 12),
         if (!_scrollable && !_constrain)
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(10)),
-            child: Text(t("warn_no_scroll_no_constrain"), style: const TextStyle(fontSize: 12)),
+            decoration: BoxDecoration(
+                color: Colors.red.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(10)),
+            child: Text(t("warn_no_scroll_no_constrain"),
+                style: const TextStyle(fontSize: 12)),
           ),
         if (!_scrollable && _constrain)
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(color: Colors.blue.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(
+                color: Colors.blue.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(10)),
             child: Text(
               _shrinkToFit ? t("info_shrink_true") : t("info_shrink_false"),
               style: const TextStyle(fontSize: 12),
@@ -1476,7 +1755,8 @@ class _OverflowSafeDemoState extends State<_OverflowSafeDemo> {
           title: Text(t("shrink_to_fit_title")),
           subtitle: Text(t("shrink_to_fit_subtitle")),
           value: _shrinkToFit,
-          onChanged: _scrollable ? null : (v) => setState(() => _shrinkToFit = v),
+          onChanged:
+              _scrollable ? null : (v) => setState(() => _shrinkToFit = v),
         ),
       ],
     );
@@ -1516,8 +1796,10 @@ class _NotificationBadgeDemoState extends State<_NotificationBadgeDemo> {
                 Container(
                   width: 64,
                   height: 64,
-                  decoration: BoxDecoration(color: Colors.blueGrey.shade100, shape: BoxShape.circle),
-                  child: Icon(Icons.notifications, size: 30, color: Colors.blueGrey.shade700),
+                  decoration: BoxDecoration(
+                      color: Colors.blueGrey.shade100, shape: BoxShape.circle),
+                  child: Icon(Icons.notifications,
+                      size: 30, color: Colors.blueGrey.shade700),
                 ),
                 if (_count > 0)
                   Positioned(
@@ -1528,16 +1810,21 @@ class _NotificationBadgeDemoState extends State<_NotificationBadgeDemo> {
                       animationDuration: const Duration(milliseconds: 240),
                       animationCurve: Curves.easeOutBack,
                       debugLabel: "NotifBadge",
-                      onDebugWarning: (m) => debugLog.add("Badge", m, Colors.orange),
+                      onDebugWarning: (m) =>
+                          debugLog.add("Badge", m, Colors.orange),
                       child: Padding(
                         key: ValueKey(_count),
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: Text(
                           _count > 99 ? "99+" : "$_count",
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12),
                         ),
                       ),
-                      builder: (context, measuredChild, size, isPrecise, constraints) {
+                      builder: (context, measuredChild, size, isPrecise,
+                          constraints) {
                         final double w = math.max(size.width + 14, 22);
                         final double h = math.max(size.height + 8, 22);
                         return Container(
@@ -1563,11 +1850,16 @@ class _NotificationBadgeDemoState extends State<_NotificationBadgeDemo> {
           spacing: 8,
           alignment: WrapAlignment.center,
           children: [
-            OutlinedButton(onPressed: () => _set(_count - 1), child: const Text("-1")),
-            OutlinedButton(onPressed: () => _set(_count + 1), child: const Text("+1")),
-            OutlinedButton(onPressed: () => _set(_count + 25), child: const Text("+25")),
-            OutlinedButton(onPressed: () => _set(_count + 200), child: const Text("+200")),
-            OutlinedButton(onPressed: () => _set(0), child: Text(t("clear_button"))),
+            OutlinedButton(
+                onPressed: () => _set(_count - 1), child: const Text("-1")),
+            OutlinedButton(
+                onPressed: () => _set(_count + 1), child: const Text("+1")),
+            OutlinedButton(
+                onPressed: () => _set(_count + 25), child: const Text("+25")),
+            OutlinedButton(
+                onPressed: () => _set(_count + 200), child: const Text("+200")),
+            OutlinedButton(
+                onPressed: () => _set(0), child: Text(t("clear_button"))),
           ],
         ),
       ],
@@ -1607,20 +1899,28 @@ class _DebugConsoleState extends State<_DebugConsole> {
                 InkWell(
                   onTap: () => setState(() => _expanded = !_expanded),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
                     child: Row(
                       children: [
                         const Icon(Icons.terminal, size: 18),
                         const SizedBox(width: 8),
-                        Text(t("debug_console"), style: Theme.of(context).textTheme.labelLarge),
+                        Text(t("debug_console"),
+                            style: Theme.of(context).textTheme.labelLarge),
                         const SizedBox(width: 8),
                         if (entries.isNotEmpty)
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                            decoration: BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.circular(12)),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.circular(12)),
                             child: Text(
                               "${entries.length}",
-                              style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         const Spacer(),
@@ -1630,10 +1930,13 @@ class _DebugConsoleState extends State<_DebugConsole> {
                             tooltip: t("copy_all"),
                             icon: const Icon(Icons.copy_all_outlined),
                             onPressed: () async {
-                              await Clipboard.setData(ClipboardData(text: debugLog.toPlainText()));
+                              await Clipboard.setData(
+                                  ClipboardData(text: debugLog.toPlainText()));
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(t("console_copied")), duration: const Duration(seconds: 1)),
+                                  SnackBar(
+                                      content: Text(t("console_copied")),
+                                      duration: const Duration(seconds: 1)),
                                 );
                               }
                             },
@@ -1657,37 +1960,46 @@ class _DebugConsoleState extends State<_DebugConsole> {
                   decoration: const BoxDecoration(),
                   child: entries.isEmpty
                       ? Center(
-                    child: Text(
-                      t("no_events_yet"),
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  )
-                      : ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: entries.length,
-                    itemBuilder: (context, i) {
-                      final e = entries[i];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        // SelectableText.rich (rather than RichText) to allow
-                        // touch/mouse selection and line-by-line copying, in
-                        // addition to the "copy all" button above.
-                        child: SelectableText.rich(
-                          TextSpan(
-                            style: TextStyle(fontFamily: "monospace", fontSize: 12, color: onSurface),
-                            children: [
-                              TextSpan(
-                                text: "[${_fmtTime(e.time)}] ",
-                                style: TextStyle(color: onSurface.withValues(alpha: 0.5)),
-                              ),
-                              TextSpan(text: "${e.tag}: ", style: TextStyle(color: e.color, fontWeight: FontWeight.bold)),
-                              TextSpan(text: e.message),
-                            ],
+                          child: Text(
+                            t("no_events_yet"),
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
+                        )
+                      : ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          itemCount: entries.length,
+                          itemBuilder: (context, i) {
+                            final e = entries[i];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              // SelectableText.rich (rather than RichText) to allow
+                              // touch/mouse selection and line-by-line copying, in
+                              // addition to the "copy all" button above.
+                              child: SelectableText.rich(
+                                TextSpan(
+                                  style: TextStyle(
+                                      fontFamily: "monospace",
+                                      fontSize: 12,
+                                      color: onSurface),
+                                  children: [
+                                    TextSpan(
+                                      text: "[${_fmtTime(e.time)}] ",
+                                      style: TextStyle(
+                                          color:
+                                              onSurface.withValues(alpha: 0.5)),
+                                    ),
+                                    TextSpan(
+                                        text: "${e.tag}: ",
+                                        style: TextStyle(
+                                            color: e.color,
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(text: e.message),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
               ],
             ),
